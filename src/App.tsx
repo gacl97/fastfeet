@@ -1,5 +1,14 @@
 import React from 'react';
 
-const App: React.FC = () => <h1>Hello FastFeet</h1>
+import GlobalSytle from './styles/global';
+
+import SignIn from './pages/SignIn';
+
+const App: React.FC = () => (
+  <>
+    <GlobalSytle />
+    <SignIn />
+  </>
+);
 
 export default App;
