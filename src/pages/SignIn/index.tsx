@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiMail, FiLock } from 'react-icons/fi';
+import { Form } from '@unform/web';
 
 import logoImg from '../../assets/logo.png';
 
@@ -9,13 +10,17 @@ import Button from '../../components/Button';
 import { Container, Content } from './styles';
 
 const SignIn: React.FC = () => {
+  function handleSubmit(data: object): void {
+    console.log(data);
+  }
+
   return (
     <>
       <Container>
         <Content>
           <img src={logoImg} alt="FastFeet" />
 
-          <form>
+          <Form onSubmit={handleSubmit}>
             <h1>Seu e-mail</h1>
             <Input name="email" icon={FiMail} placeholder="exemplo@email.com" />
 
@@ -28,7 +33,7 @@ const SignIn: React.FC = () => {
             />
 
             <Button type="submit">Entrar no sistema</Button>
-          </form>
+          </Form>
         </Content>
       </Container>
     </>
