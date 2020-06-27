@@ -16,12 +16,12 @@ export const Content = styled.div`
   border-radius: 4px;
 
   width: 100%;
-  height: 500px;
-  max-width: 450px;
+  height: 520px;
+  max-width: 430px;
 
   form {
     margin: 40px 0;
-    width: 300px;
+    width: 310px;
     text-align: center;
 
     h1 {
