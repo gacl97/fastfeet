@@ -16,8 +16,8 @@ export const Content = styled.div`
   border-radius: 4px;
 
   width: 100%;
-  height: 450px;
-  max-width: 360px;
+  height: 500px;
+  max-width: 450px;
 
   form {
     margin: 40px 0;
