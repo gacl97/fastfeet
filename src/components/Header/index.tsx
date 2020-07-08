@@ -1,0 +1,32 @@
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+
+import { Container, HeaderContent, HeaderContainer, Menu } from './styles';
+
+import logoImg from '../../assets/logo.png';
+
+const Header: React.FC = () => {
+  return (
+    <Container>
+      <HeaderContainer>
+        <HeaderContent>
+          <img src={logoImg} alt="FastFeet" />
+
+          <Menu>
+            <NavLink to="/orders">Encomendas</NavLink>
+            <NavLink to="/deliverymen">Entregadores</NavLink>
+            <NavLink to="/recipients">Destinatarios</NavLink>
+            <NavLink to="/delivery/problems">Problemas</NavLink>
+          </Menu>
+        </HeaderContent>
+
+        <div>
+          <span>Admin FastFeet</span>
+          <a href="/">Sair do sistema</a>
+        </div>
+      </HeaderContainer>
+    </Container>
+  );
+};
+
+export default Header;

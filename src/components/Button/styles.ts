@@ -9,7 +9,7 @@ export const Container = styled.button`
 
   color: #ffffff;
   padding: 0 16px;
-  width: 100%;
+  /* width: 100%; */
   font-weight: 500;
 
   transition: background-color 0.2s;

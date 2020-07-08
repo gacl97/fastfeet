@@ -15,9 +15,11 @@ export const Container = styled.div<ContainerProps>`
   color: #999999;
 
   padding: 13px;
-  width: 100%;
+  /* width: 100%; */
 
-  margin-bottom: 15px;
+  div + div {
+    margin-bottom: 15px;
+  }
 
   display: flex;
   align-items: center;

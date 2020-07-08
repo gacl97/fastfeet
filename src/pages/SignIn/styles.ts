@@ -29,7 +29,15 @@ export const Content = styled.div`
       color: #444444;
       font-size: 16px;
       font-weight: 500;
-      margin-bottom: 9px;
+      margin: 9px 0;
+    }
+
+    div + button {
+      margin-top: 15px;
+    }
+
+    button {
+      width: 100%;
     }
   }
 
