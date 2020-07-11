@@ -31,44 +31,48 @@ const Orders: React.FC = () => {
           </Form>
 
           <table>
-            <tr>
-              <th>id</th>
-              <th>Destinatário</th>
-              <th>Entregador</th>
-              <th>Cidade</th>
-              <th>Estado</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Destinatário</th>
+                <th>Entregador</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
 
-            <tr>
-              <td>#01</td>
-              <td>Fernando Vasconcelos</td>
+            <tbody>
+              <tr>
+                <td>#01</td>
+                <td>Fernando Vasconcelos</td>
 
-              <td>
-                <section>
-                  <img
-                    src="https://avatars2.githubusercontent.com/u/43053386?s=460&v=4"
-                    alt="avatar"
-                  />
-                  <span>Gustavo Augusto</span>
-                </section>
-              </td>
+                <td>
+                  <section>
+                    <img
+                      src="https://avatars2.githubusercontent.com/u/43053386?s=460&v=4"
+                      alt="avatar"
+                    />
+                    <span>Gustavo Augusto</span>
+                  </section>
+                </td>
 
-              <td>Congonhas</td>
-              <td>Minas Gerais</td>
-              <td>
-                <Status type="delivered">
-                  <FiCircle />
-                  <span>Entregue</span>
-                </Status>
-              </td>
-              <td>
-                <button type="button">
-                  <FiMoreHorizontal size={16} />
-                </button>
-              </td>
-            </tr>
+                <td>Congonhas</td>
+                <td>Minas Gerais</td>
+                <td>
+                  <Status type="delivered">
+                    <FiCircle />
+                    <span>Entregue</span>
+                  </Status>
+                </td>
+                <td>
+                  <button type="button">
+                    <FiMoreHorizontal size={16} />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </Content>
       </Container>

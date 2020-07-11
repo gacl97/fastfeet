@@ -31,33 +31,37 @@ const Deliverymen: React.FC = () => {
           </Form>
 
           <table>
-            <tr>
-              <th>id</th>
-              <th>Foto</th>
-              <th>Nome</th>
-              <th>Email</th>
-              <th>Ações</th>
-            </tr>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Foto</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
 
-            <tr>
-              <td>#01</td>
+            <tbody>
+              <tr>
+                <td>#01</td>
 
-              <td>
-                <img
-                  src="https://avatars2.githubusercontent.com/u/43053386?s=460&v=4"
-                  alt="avatar"
-                />
-              </td>
+                <td>
+                  <img
+                    src="https://avatars2.githubusercontent.com/u/43053386?s=460&v=4"
+                    alt="avatar"
+                  />
+                </td>
 
-              <td>Gustavo Augusto</td>
-              <td>gustavolopes26@gmail.com</td>
+                <td>Gustavo Augusto</td>
+                <td>gustavolopes26@gmail.com</td>
 
-              <td>
-                <button type="button">
-                  <FiMoreHorizontal size={16} />
-                </button>
-              </td>
-            </tr>
+                <td>
+                  <button type="button">
+                    <FiMoreHorizontal size={16} />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </Content>
       </Container>

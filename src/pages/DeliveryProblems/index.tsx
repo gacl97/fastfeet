@@ -14,24 +14,28 @@ const DeliveryProblems: React.FC = () => {
           <h1>Problemas na entrega</h1>
 
           <table>
-            <tr>
-              <th>id</th>
-              <th>Problema</th>
-              <th>Ações</th>
-            </tr>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Problema</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
 
-            <tr>
-              <td>#01</td>
-              <td>
-                Morador não estava em casa no momento da tentativa de entrega
-              </td>
+            <tbody>
+              <tr>
+                <td>#01</td>
+                <td>
+                  Morador não estava em casa no momento da tentativa de entrega
+                </td>
 
-              <td>
-                <button type="button">
-                  <FiMoreHorizontal size={16} />
-                </button>
-              </td>
-            </tr>
+                <td>
+                  <button type="button">
+                    <FiMoreHorizontal size={16} />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </Content>
       </Container>

@@ -31,24 +31,28 @@ const Recipients: React.FC = () => {
           </Form>
 
           <table>
-            <tr>
-              <th>id</th>
-              <th>Nome</th>
-              <th>Endereço</th>
-              <th>Ações</th>
-            </tr>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Nome</th>
+                <th>Endereço</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
 
-            <tr>
-              <td>#01</td>
-              <td>Gustavo Augusto</td>
-              <td>Rua Dom Silvério, Matriz, 103, Congonhas-MG</td>
+            <tbody>
+              <tr>
+                <td>#01</td>
+                <td>Gustavo Augusto</td>
+                <td>Rua Dom Silvério, Matriz, 103, Congonhas-MG</td>
 
-              <td>
-                <button type="button">
-                  <FiMoreHorizontal size={16} />
-                </button>
-              </td>
-            </tr>
+                <td>
+                  <button type="button">
+                    <FiMoreHorizontal size={16} />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </Content>
       </Container>

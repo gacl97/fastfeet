@@ -19,27 +19,29 @@ export const Content = styled.div`
     font-weight: 500;
     margin-bottom: 34px;
   }
-}
 
   table {
-    border-spacing: 0; /* Removes the cell spacing via CSS */
-    border-spacing: 0 20px;
+    width: 100%;
+    border-spacing: 0 10px;
 
     th {
       text-align: start;
-      padding: 0 20px;
       color: #444444;
-    }
-
-    tr + tr {
-      height: 57px;
-      background: #ffffff;
+      font-weight: normal;
+      padding: 0 32px;
+      font-size: 18px;
+      line-height: 24px;
     }
 
     td {
+      padding: 0 32px;
+      border: 0;
+      font-size: 16px;
+      font-weight: normal;
+      background: #ffffff;
+      height: 57px;
       color: #666666;
       text-align: start;
-      padding: 0 20px;
 
       > img {
         height: 35px;
@@ -53,6 +55,12 @@ export const Content = styled.div`
         background: transparent;
         padding: 0 10px;
       }
+    }
+    td:first-child {
+      border-radius: 8px 0 0 8px;
+    }
+    td:last-child {
+      border-radius: 0 8px 8px 0;
     }
   }
 `;
