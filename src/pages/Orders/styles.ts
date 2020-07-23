@@ -38,7 +38,6 @@ const statusTypeVariations = {
 
 export const Container = styled.div`
   background: #f5f5f5;
-  padding: 34px 0;
   height: 100vh;
 `;
 
@@ -46,6 +45,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 1440px;
+  padding: 34px 0;
   margin: 0 auto;
 
   > h1 {
@@ -53,6 +53,14 @@ export const Content = styled.div`
     font-size: 24px;
     text-align: start;
     font-weight: 500;
+  }
+
+  > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #444444;
+    font-size: 20px;
   }
 
   form {
@@ -98,13 +106,13 @@ export const Content = styled.div`
       text-align: start;
       color: #444444;
       font-weight: normal;
-      padding: 0 32px;
+      padding: 10px 10px;
       font-size: 18px;
       line-height: 24px;
     }
 
     td {
-      padding: 0 32px;
+      padding: 0 20px;
       border: 0;
       font-size: 16px;
       font-weight: normal;
@@ -126,7 +134,7 @@ export const Content = styled.div`
         }
       }
 
-      button {
+      > button {
         border: 0;
         background: transparent;
         padding: 0 10px;
@@ -144,7 +152,7 @@ export const Content = styled.div`
 
 export const Status = styled.div<StatusProps>`
   height: 30px;
-  width: 110px;
+  width: 120px;
 
   display: flex;
   align-items: center;

@@ -3,9 +3,13 @@ import { NavLink } from 'react-router-dom';
 
 import { Container, HeaderContent, HeaderContainer, Menu } from './styles';
 
+import { useAuth } from '../../hooks/auth';
+
 import logoImg from '../../assets/logo.png';
 
 const Header: React.FC = () => {
+  const { signOut } = useAuth();
+
   return (
     <Container>
       <HeaderContainer>
@@ -22,7 +26,9 @@ const Header: React.FC = () => {
 
         <div>
           <span>Admin FastFeet</span>
-          <a href="/">Sair do sistema</a>
+          <button type="button" onClick={signOut}>
+            Sair do sistema
+          </button>
         </div>
       </HeaderContainer>
     </Container>

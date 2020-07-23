@@ -20,6 +20,14 @@ export const Content = styled.div`
     margin-bottom: 34px;
   }
 
+  > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #444444;
+    font-size: 20px;
+  }
+
   table {
     width: 100%;
     border-spacing: 0 10px;

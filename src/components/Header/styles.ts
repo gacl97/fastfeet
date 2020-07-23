@@ -24,8 +24,9 @@ export const HeaderContainer = styled.div`
       font-weight: 500;
     }
 
-    a {
-      text-decoration: none;
+    button {
+      border: 0;
+      background: transparent;
       color: #de3b3b;
       font-size: 14px;
       font-weight: 500;

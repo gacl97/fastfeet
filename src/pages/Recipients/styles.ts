@@ -20,6 +20,14 @@ export const Content = styled.div`
     font-weight: 500;
   }
 
+  > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #444444;
+    font-size: 20px;
+  }
+
   form {
     display: flex;
     justify-content: space-between;
@@ -63,13 +71,13 @@ export const Content = styled.div`
       text-align: start;
       color: #444444;
       font-weight: normal;
-      padding: 0 32px;
+      padding: 10px 10px;
       font-size: 18px;
       line-height: 24px;
     }
 
     td {
-      padding: 0 32px;
+      padding: 0 20px;
       border: 0;
       font-size: 16px;
       font-weight: normal;

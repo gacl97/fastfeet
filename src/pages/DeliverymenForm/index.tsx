@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FiChevronLeft, FiCheck, FiUser, FiHome } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { Link } from 'react-router-dom';
 
+import api from '../../services/api';
+
 import Header from '../../components/Header';
-import Buttom from '../../components/Button';
+import Button from '../../components/Button';
 import Input from '../../components/Input';
 
 import {
@@ -21,7 +23,11 @@ import {
   CepAddress,
 } from './styles';
 
+interface DeliverymenFormData {}
+
 const DeliverymenForm: React.FC = () => {
+  const handleSubmit = useCallback(() => {}, []);
+
   return (
     <>
       <Container>
@@ -35,10 +41,10 @@ const DeliverymenForm: React.FC = () => {
                 <FiChevronLeft size={22} />
                 Voltar
               </Link>
-              <Buttom type="submit">
+              <Button type="submit">
                 <FiCheck size={22} />
                 Salvar
-              </Buttom>
+              </Button>
             </div>
           </ContentHeader>
           <Form onSubmit={() => {}}>

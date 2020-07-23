@@ -55,6 +55,14 @@ export const Content = styled.div`
     }
   }
 
+  > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #444444;
+    font-size: 20px;
+  }
+
   table {
     width: 100%;
     border-spacing: 0 10px;
@@ -63,13 +71,13 @@ export const Content = styled.div`
       text-align: start;
       color: #444444;
       font-weight: normal;
-      padding: 0 32px;
+      padding: 10px 10px;
       font-size: 18px;
       line-height: 24px;
     }
 
     td {
-      padding: 0 32px;
+      padding: 0 20px;
       border: 0;
       font-size: 16px;
       font-weight: normal;
@@ -79,8 +87,8 @@ export const Content = styled.div`
       text-align: start;
 
       > img {
-        height: 35px;
-        width: 35px;
+        height: 45px;
+        width: 45px;
         border-radius: 50%;
         margin-right: 5px;
       }
