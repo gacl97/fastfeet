@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { FiMoreHorizontal } from 'react-icons/fi';
 
 import api from '../../services/api';
 
 import Header from '../../components/Header';
+import OptionDeliveryProblemButton from '../../components/OptionDeliveryProblemButton';
 
 import { Container, Content } from './styles';
 
@@ -29,13 +29,13 @@ const DeliveryProblems: React.FC = () => {
 
   return (
     <>
-      <Header />
       <Container>
+        <Header />
         <Content>
           <h1>Problemas na entrega</h1>
 
           {deliveryProblems.length === 0 ? (
-            <span>Ainda não possui nenhum destinatário cadastrado</span>
+            <span>Ainda não possui nenhuma entrega com problemas</span>
           ) : (
             <table>
               <thead>
@@ -54,9 +54,10 @@ const DeliveryProblems: React.FC = () => {
                       <td>{deliveryProblem.description}</td>
 
                       <td>
-                        <button type="button">
-                          <FiMoreHorizontal size={16} />
-                        </button>
+                        <OptionDeliveryProblemButton
+                          deliveryProblemId={deliveryProblem.id}
+                          description={deliveryProblem.description}
+                        />
                       </td>
                     </tr>
                   ))}

@@ -1,14 +1,17 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
+import * as Yup from 'yup';
 import { FiChevronLeft, FiCheck, FiUser, FiHome } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
-import Header from '../../components/Header';
-import Button from '../../components/Button';
-import Input from '../../components/Input';
+import getValidationErrors from '../../../utils/getValidationErrors';
+
+import Header from '../../../components/Header';
+import Button from '../../../components/Button';
+import Input from '../../../components/Input';
 
 import {
   Container,
@@ -34,15 +37,38 @@ interface RecipientFormData {
   zipcode: string;
 }
 
-const RecipientForm: React.FC = () => {
+const RecipientEditForm: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
+  const { id } = useParams();
 
   const handleSubmit = useCallback(
     async (data: RecipientFormData) => {
-      await api.post('/recipients', data);
+      try {
+        formRef.current?.setErrors({});
 
-      history.push('/recipients');
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Informe um nome'),
+          street: Yup.string().required('Informe uma rua'),
+          number: Yup.string().required('Informe um numero'),
+          complement: Yup.string().required('Informe um complemento'),
+          city: Yup.string().required('Informe uma cidade'),
+          state: Yup.string().required('Informe uma estado'),
+          zipcode: Yup.string().required('Informe uma cep'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        // await api.put('/recipients', data);
+
+        history.push('/recipients');
+      } catch (err) {
+        const errors = getValidationErrors(err);
+
+        formRef.current?.setErrors(errors);
+      }
     },
     [history],
   );
@@ -53,10 +79,10 @@ const RecipientForm: React.FC = () => {
         <Header />
         <Content>
           <ContentHeader>
-            <h1>Cadastro de destinatário</h1>
+            <h1>Edição de destinatário</h1>
 
             <div>
-              <Link to="/deliverymen">
+              <Link to="/recipients">
                 <FiChevronLeft size={22} />
                 Voltar
               </Link>
@@ -66,7 +92,11 @@ const RecipientForm: React.FC = () => {
               </Button>
             </div>
           </ContentHeader>
-          <Form ref={formRef} onSubmit={handleSubmit}>
+          <Form
+            ref={formRef}
+            // initialData={{ name: recipient.name }}
+            onSubmit={handleSubmit}
+          >
             <h1>Nome</h1>
             <Input name="name" icon={FiUser} type="text" placeholder="Nome" />
 
@@ -119,4 +149,4 @@ const RecipientForm: React.FC = () => {
   );
 };
 
-export default RecipientForm;
+export default RecipientEditForm;

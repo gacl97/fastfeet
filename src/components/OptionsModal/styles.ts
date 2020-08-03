@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { shade } from 'polished';
 
 export const Container = styled.div`
   position: relative;
@@ -7,8 +8,8 @@ export const Container = styled.div`
 export const Content = styled.div`
   z-index: 1;
   position: absolute;
-  width: 150px;
-  left: calc(50% - 75px);
+  width: 220px;
+  left: px;
   background: #fff;
   border: 1px solid #00000026;
 
@@ -22,23 +23,24 @@ export const Content = styled.div`
     border-width: 0 6px 6px 6px;
     bottom: 100%;
     position: absolute;
-    left: 46%;
+    left: 5%;
   }
 `;
 
 export const ContentItem = styled.div`
   display: flex;
   flex-direction: column;
-  width: 130px;
+  width: 200px;
 
   > a {
     display: flex;
     align-items: center;
     color: #999999;
+    font-size: 15px;
 
     text-decoration: none;
     border-bottom: 1px solid #999999;
-    margin-left: 10px;
+    margin-left: 15px;
 
     padding-bottom: 10px;
 
@@ -56,6 +58,11 @@ export const ContentItem = styled.div`
 
     & + a {
       margin-top: 13px;
+    }
+
+    transition: color 0.2s;
+    &:hover {
+      color: ${shade(0.2, '#999999')};
     }
   }
 
@@ -64,10 +71,11 @@ export const ContentItem = styled.div`
     background: transparent;
     padding-bottom: 10px;
     border-bottom: 1px solid #999;
-    margin-left: 10px;
+    margin-left: 15px;
     display: flex;
     align-items: center;
     color: #999999;
+    font-size: 15px;
 
     svg {
       margin-right: 10px;
@@ -83,6 +91,11 @@ export const ContentItem = styled.div`
 
     & + a {
       margin-top: 13px;
+    }
+
+    transition: color 0.2s;
+    &:hover {
+      color: ${shade(0.2, '#999999')};
     }
   }
 `;

@@ -1,15 +1,18 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import * as Yup from 'yup';
 import { FiChevronLeft, FiCheck } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
-import Header from '../../components/Header';
-import Button from '../../components/Button';
-import Input from '../../components/Input';
-import Select from '../../components/Select';
+import getValidationErrors from '../../../utils/getValidationErrors';
+
+import Header from '../../../components/Header';
+import Button from '../../../components/Button';
+import Input from '../../../components/Input';
+import Select from '../../../components/Select';
 
 import {
   Container,
@@ -46,11 +49,12 @@ interface OrderFormData {
   product: string;
 }
 
-const OrdersForm: React.FC = () => {
+const OrdersEditForm: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const [recipients, setRecipients] = useState<RecipientFormatted[]>([]);
   const [deliverers, setDeliverers] = useState<DelivererFormatted[]>([]);
   const history = useHistory();
+  const { id } = useParams();
 
   useEffect(() => {
     async function loadRecipients() {
@@ -88,11 +92,29 @@ const OrdersForm: React.FC = () => {
 
   const handleSubmit = useCallback(
     async (data: OrderFormData) => {
-      await api.post('/deliveries', data);
+      try {
+        formRef.current?.setErrors({});
 
-      history.push('/orders');
+        const schema = Yup.object().shape({
+          deliveryman_id: Yup.string().required('Selecione um entregador'),
+          recipient_id: Yup.string().required('Selecione um destinatario'),
+          product: Yup.string().required('Informe o nome do produto'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        await api.put(`/deliveries/${id}`, data);
+
+        history.push('/orders');
+      } catch (err) {
+        const errors = getValidationErrors(err);
+
+        formRef.current?.setErrors(errors);
+      }
     },
-    [history],
+    [history, id],
   );
 
   return (
@@ -101,7 +123,7 @@ const OrdersForm: React.FC = () => {
         <Header />
         <Content>
           <ContentHeader>
-            <h1>Cadastro de encomendas</h1>
+            <h1>Edição de encomendas</h1>
 
             <div>
               <Link to="/orders">
@@ -147,4 +169,4 @@ const OrdersForm: React.FC = () => {
   );
 };
 
-export default OrdersForm;
+export default OrdersEditForm;

@@ -1,10 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { useField } from '@unform/core';
+import { FiAlertCircle } from 'react-icons/fi';
 
 import ReactSelect, {
   OptionTypeBase,
   Props as ReactSelectProps,
 } from 'react-select';
+
+import { Container, Error } from './styles';
 
 interface SelectProps extends ReactSelectProps<OptionTypeBase> {
   name: string;
@@ -12,7 +15,7 @@ interface SelectProps extends ReactSelectProps<OptionTypeBase> {
 
 const Select: React.FC<SelectProps> = ({ name, ...rest }) => {
   const selectRef = useRef(null);
-  const { fieldName, registerField } = useField(name);
+  const { fieldName, registerField, error } = useField(name);
 
   useEffect(() => {
     registerField({
@@ -44,13 +47,22 @@ const Select: React.FC<SelectProps> = ({ name, ...rest }) => {
   };
 
   return (
-    <ReactSelect
-      styles={customStyles}
-      cacheOptions
-      ref={selectRef}
-      classNamePrefix="react-select"
-      {...rest}
-    />
+    <>
+      <Container isErrored={!!error}>
+        <ReactSelect
+          styles={customStyles}
+          cacheOptions
+          ref={selectRef}
+          classNamePrefix="react-select"
+          {...rest}
+        />
+        {error && (
+          <Error title={error}>
+            <FiAlertCircle size={20} color="#c53030" />
+          </Error>
+        )}
+      </Container>
+    </>
   );
 };
 

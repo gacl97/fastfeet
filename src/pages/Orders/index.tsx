@@ -1,13 +1,5 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import {
-  FiSearch,
-  FiPlus,
-  FiMoreHorizontal,
-  FiCircle,
-  FiEye,
-  FiEdit2,
-  FiTrash2,
-} from 'react-icons/fi';
+import React, { useState, useEffect, useMemo } from 'react';
+import { FiSearch, FiPlus, FiCircle } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { Link } from 'react-router-dom';
 
@@ -15,14 +7,13 @@ import api from '../../services/api';
 import formatDate from '../../utils/formatDate';
 
 import Header from '../../components/Header';
-import Input from '../../components/Input';
+import SearchInput from '../../components/SearchInput';
 
-import { Container, Content, Status } from './styles';
+import { Container, Content, ContentHeader, Status } from './styles';
 
-import OptionsModal from '../../components/OptionsModal';
-import InfoOrderModal from '../../components/InfoOrderModal';
+import OptionOrderButton from '../../components/OptionOrderButton';
 
-interface Orders {
+interface Order {
   id: string;
   recipient: {
     name: string;
@@ -48,13 +39,11 @@ interface Orders {
 }
 
 const Orders: React.FC = () => {
-  const [orders, setOrders] = useState<Orders[]>([]);
-  const [openOptionsModal, setOpenOptionsModal] = useState(false);
-  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     async function loadOrders() {
-      const response = await api.get<Orders[]>('/deliveries');
+      const response = await api.get<Order[]>('/deliveries');
 
       setOrders(
         response.data.map(order => {
@@ -86,14 +75,6 @@ const Orders: React.FC = () => {
     };
   }, []);
 
-  const toggleOptionsModal = useCallback(() => {
-    setOpenOptionsModal(!openOptionsModal);
-  }, [setOpenOptionsModal, openOptionsModal]);
-
-  const toggleInfoModal = useCallback(() => {
-    setOpenInfoModal(!openInfoModal);
-  }, [setOpenInfoModal, openInfoModal]);
-
   return (
     <>
       <Container>
@@ -101,9 +82,8 @@ const Orders: React.FC = () => {
         <Content>
           <h1>Gerenciando encomendas</h1>
 
-          <Form onSubmit={() => {}}>
-            <Input
-              name="search-orders"
+          <ContentHeader>
+            <SearchInput
               icon={FiSearch}
               type="text"
               placeholder="Buscar por encomendas"
@@ -113,7 +93,7 @@ const Orders: React.FC = () => {
               <FiPlus size={22} color="#FFFFFF" />
               Cadastrar
             </Link>
-          </Form>
+          </ContentHeader>
 
           {orders.length === 0 ? (
             <span>Ainda não possui nenhuma encomenda cadastrada</span>
@@ -140,17 +120,13 @@ const Orders: React.FC = () => {
 
                       <td>
                         <section>
-                          {order.deliveryman.avatar_url ? (
-                            <img
-                              src={order.deliveryman.avatar_url}
-                              alt={order.deliveryman.name}
-                            />
-                          ) : (
-                            <img
-                              src="https://www.pngkey.com/png/detail/988-9886269_blank-person-facebook-no-profile.png"
-                              alt={order.deliveryman.name}
-                            />
-                          )}
+                          <img
+                            src={
+                              order.deliveryman.avatar_url ||
+                              `https://api.adorable.io/avatars/${order.id}`
+                            }
+                            alt={order.deliveryman.name}
+                          />
                           <span>{order.deliveryman.name}</span>
                         </section>
                       </td>
@@ -164,38 +140,14 @@ const Orders: React.FC = () => {
                         </Status>
                       </td>
                       <td>
-                        <button type="button" onClick={toggleOptionsModal}>
-                          <FiMoreHorizontal size={16} />
-                        </button>
-                        {openOptionsModal && (
-                          <OptionsModal>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setOpenInfoModal(true);
-                                setOpenOptionsModal(false);
-                              }}
-                            >
-                              <FiEye color="#8E5BE8" /> Visualizar
-                            </button>
-                            <Link to={`/orders/edit-order/${order.id}`}>
-                              <FiEdit2 color="#4D85EE" /> Editar
-                            </Link>
-                            <button type="button">
-                              <FiTrash2 color="#DE3B3B" /> Excluir
-                            </button>{' '}
-                          </OptionsModal>
-                        )}
-                        {openInfoModal && (
-                          <InfoOrderModal
-                            setOpenModal={toggleInfoModal}
-                            street={order.formattedStreet}
-                            city={order.formattedCity}
-                            zipcode={order.formattedZipCode}
-                            withdrawalDate={order.formattedStartDate}
-                            deliveryDate={order.formattedEndDate}
-                          />
-                        )}
+                        <OptionOrderButton
+                          orderId={order.id}
+                          street={order.formattedStreet}
+                          city={order.formattedCity}
+                          zipcode={order.formattedZipCode}
+                          withdrawalDate={order.formattedStartDate}
+                          deliveryDate={order.formattedEndDate}
+                        />
                       </td>
                     </tr>
                   ))}

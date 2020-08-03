@@ -36,8 +36,8 @@ const AuthProvider: React.FC = ({ children }) => {
     return {} as AuthenticateDataState;
   });
 
-  const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
-    const response = await api.post('/sessions', {
+  const signIn = useCallback(async ({ email, password }) => {
+    const response = await api.post('sessions', {
       email,
       password,
     });
@@ -49,10 +49,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
     api.defaults.headers.authorization = `Bearer ${token}`; // Setar token de forma global nos headers para todas requisicoes verem o token
 
-    setData({
-      token,
-      user,
-    });
+    setData({ token, user });
   }, []);
 
   const signOut = useCallback(() => {

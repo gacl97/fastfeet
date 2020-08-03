@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FiSearch, FiPlus, FiMoreHorizontal } from 'react-icons/fi';
-import { Form } from '@unform/web';
+import { FiSearch, FiPlus } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
 import Header from '../../components/Header';
-import Input from '../../components/Input';
+import SearchInput from '../../components/SearchInput';
+import OptionDeliverymenModal from '../../components/OptionDeliverymenModal';
 
-import { Container, Content } from './styles';
+import { Container, Content, ContentHeader } from './styles';
 
 interface DelivererData {
   id: string;
@@ -36,9 +36,8 @@ const Deliverymen: React.FC = () => {
         <Content>
           <h1>Gerenciando entregadores</h1>
 
-          <Form onSubmit={() => {}}>
-            <Input
-              name="search-deliverymen"
+          <ContentHeader>
+            <SearchInput
               icon={FiSearch}
               type="text"
               placeholder="Buscar por entregadores"
@@ -48,7 +47,7 @@ const Deliverymen: React.FC = () => {
               <FiPlus size={22} color="#FFFFFF" />
               Cadastrar
             </Link>
-          </Form>
+          </ContentHeader>
 
           {deliverers.length === 0 ? (
             <span>Ainda não possui nenhum entregador cadastrado</span>
@@ -71,17 +70,13 @@ const Deliverymen: React.FC = () => {
                       <td>{deliverer.id}</td>
 
                       <td>
-                        {deliverer.avatar_url ? (
-                          <img
-                            src={deliverer.avatar_url}
-                            alt={deliverer.name}
-                          />
-                        ) : (
-                          <img
-                            src="https://www.pngkey.com/png/detail/988-9886269_blank-person-facebook-no-profile.png"
-                            alt="avatar"
-                          />
-                        )}
+                        <img
+                          src={
+                            deliverer.avatar_url ||
+                            `https://api.adorable.io/avatars/${deliverer.name}`
+                          }
+                          alt={deliverer.name}
+                        />
                       </td>
 
                       <td>{deliverer.name}</td>
@@ -89,7 +84,9 @@ const Deliverymen: React.FC = () => {
 
                       <td>
                         <button type="button">
-                          <FiMoreHorizontal size={16} />
+                          <OptionDeliverymenModal
+                            deliverymenId={deliverer.id}
+                          />
                         </button>
                       </td>
                     </tr>

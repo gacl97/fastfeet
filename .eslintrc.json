@@ -32,6 +32,7 @@
     "prettier/prettier": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "no-alert": "off",
     "react/prop-types": "off",
     "no-unused-expressions": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
