@@ -36,22 +36,6 @@ const AuthProvider: React.FC = ({ children }) => {
     return {} as AuthenticateDataState;
   });
 
-  const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('sessions', {
-      email,
-      password,
-    });
-
-    const { token, user } = response.data;
-
-    localStorage.setItem('@Fastfeet:token', token);
-    localStorage.setItem('@Fastfeet:user', JSON.stringify(user));
-
-    api.defaults.headers.authorization = `Bearer ${token}`; // Setar token de forma global nos headers para todas requisicoes verem o token
-
-    setData({ token, user });
-  }, []);
-
   const signOut = useCallback(() => {
     localStorage.removeItem('@Fastfeet:token');
     localStorage.removeItem('@Fastfeet:user');
