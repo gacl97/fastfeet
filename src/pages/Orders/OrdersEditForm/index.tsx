@@ -14,6 +14,8 @@ import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import Select from '../../../components/Select';
 
+import { useOrder } from '../../../hooks/order';
+
 import {
   Container,
   Content,
@@ -53,6 +55,7 @@ const OrdersEditForm: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const [recipients, setRecipients] = useState<RecipientFormatted[]>([]);
   const [deliverers, setDeliverers] = useState<DelivererFormatted[]>([]);
+  const { order } = useOrder();
   const history = useHistory();
   const { id } = useParams();
 
@@ -137,7 +140,15 @@ const OrdersEditForm: React.FC = () => {
             </div>
           </ContentHeader>
 
-          <Form ref={formRef} onSubmit={handleSubmit}>
+          <Form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            initialData={{
+              recipient_id: order.recipient,
+              deliveryman_id: order.deliveryman,
+              product: order.product,
+            }}
+          >
             <SelectOptions>
               <SelectContainer>
                 <h1>Destinatário</h1>

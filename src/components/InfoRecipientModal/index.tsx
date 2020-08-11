@@ -19,21 +19,22 @@ import {
   Footer,
 } from './styles';
 
-interface OrderPropsData {
-  order_id: string;
-  street: string;
-  city: string;
+interface RecipientInfo {
+  id: string;
+  formattedStreet: string;
+  formattedCity: string;
   zipcode: string;
-  withdrawalDate: string;
-  deliveryDate: string;
 }
 
 interface ModalProps {
   setOpenModal(): void;
-  order_info: OrderPropsData;
+  recipient_info: RecipientInfo;
 }
 
-const InfoOrderModal: React.FC<ModalProps> = ({ setOpenModal, order_info }) => {
+const InfoRecipientModal: React.FC<ModalProps> = ({
+  recipient_info,
+  setOpenModal,
+}) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const history = useHistory();
 
@@ -70,20 +71,20 @@ const InfoOrderModal: React.FC<ModalProps> = ({ setOpenModal, order_info }) => {
         return;
       }
 
-      await api.delete(`/deliveries/${order_info.order_id}`);
+      await api.delete(`/deliveries/${recipient_info.id}`);
       history.push('/');
     },
-    [order_info.order_id, history],
+    [recipient_info.id, history],
   );
 
   const DeleteConfirm = useCallback(() => {
-    const message = `Tem certeza que deseja excluir o pedido: ${order_info.order_id} ?`;
+    const message = `Tem certeza que deseja excluir o destinatário: ${recipient_info.id} ?`;
 
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
           <CustomConfirmAlert
-            title="Excluir pedido"
+            title="Excluir destinatário"
             message={message}
             handleDelete={handleDeleteOrder}
             onClose={onClose}
@@ -91,28 +92,29 @@ const InfoOrderModal: React.FC<ModalProps> = ({ setOpenModal, order_info }) => {
         );
       },
     });
-  }, [order_info.order_id, handleDeleteOrder]);
+  }, [recipient_info.id, handleDeleteOrder]);
 
   return (
     <>
       <Container>
         <Box ref={boxRef}>
           <Header>
-            <h1>Informações da encomenda</h1>
+            <h1>Informações do destinatário</h1>
             <button type="button" onClick={closeModal}>
               <FiXCircle />
             </button>
           </Header>
 
           <HeaderContent>
-            <span>{order_info.street}</span>
-            <span>{order_info.city}</span>
-            <span>{order_info.zipcode}</span>
+            <span>Endereço completo:</span>
+            <span>{recipient_info.formattedStreet}</span>
+            <span>{recipient_info.formattedCity}</span>
+            <span>{recipient_info.zipcode}</span>
           </HeaderContent>
 
           <Separator />
 
-          <Dates>
+          {/* <Dates>
             <h1>Datas</h1>
             <span>
               <strong>Retirada: </strong> {order_info.withdrawalDate}
@@ -120,20 +122,10 @@ const InfoOrderModal: React.FC<ModalProps> = ({ setOpenModal, order_info }) => {
             <span>
               <strong>Entrega: </strong> {order_info.deliveryDate}
             </span>
-          </Dates>
-
-          <Separator />
-
-          <Signature>
-            <h1>Assinatura do destinatário</h1>
-
-            <img src={signature} alt="signature" />
-          </Signature>
-
-          <Separator />
+          </Dates> */}
 
           <Footer>
-            <Link to={`/orders/edit-order/${order_info.order_id}`}>
+            <Link to={`/recipients/edit-recipient/${recipient_info.id}`}>
               <FiEdit2 /> Editar
             </Link>
             <button type="button" onClick={DeleteConfirm}>
@@ -146,4 +138,4 @@ const InfoOrderModal: React.FC<ModalProps> = ({ setOpenModal, order_info }) => {
   );
 };
 
-export default InfoOrderModal;
+export default InfoRecipientModal;

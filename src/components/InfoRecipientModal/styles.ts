@@ -19,7 +19,7 @@ export const Container = styled.div`
 
 export const Box = styled.div`
   width: 450px;
-  height: 450px;
+  height: 300px;
 
   background: #ffffff;
   border-radius: 4px;
@@ -51,7 +51,7 @@ export const Header = styled.div`
 export const HeaderContent = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 4px;
+  margin-top: 10px;
 
   span {
     font-size: 16px;

@@ -1,16 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { FiPlus, FiSearch } from 'react-icons/fi';
+import React, { useState, useEffect, useCallback } from 'react';
+import { FiSearch, FiPlus, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
-
-import { RecipientProvider } from '../../hooks/recipient';
+import formatDate from '../../utils/formatDate';
 
 import Header from '../../components/Header';
 import SearchInput from '../../components/SearchInput';
-import OptionRecipientButton from '../../components/OptionRecipientButton';
+import InfoRecipientModal from '../../components/InfoRecipientModal';
 
-import { Container, Content, ContentHeader } from './styles';
+import { useRecipient } from '../../hooks/recipient';
+
+import {
+  Container,
+  Content,
+  Box,
+  RecipientInfo,
+  Separator,
+  ContentHeader,
+} from './styles';
+
+interface RecipientInfo {
+  id: string;
+  formattedStreet: string;
+  formattedCity: string;
+  zipcode: string;
+}
 
 interface RecipientData {
   id: string;
@@ -21,11 +36,21 @@ interface RecipientData {
   city: string;
   state: string;
   zipcode: string;
-  formattedAddress: string;
+  formattedStreet: string;
+  formattedCity: string;
 }
 
 const Recipients: React.FC = () => {
   const [recipients, setRecipients] = useState<RecipientData[]>([]);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [recipientInfo, setRecipientInfo] = useState<RecipientInfo>(
+    {} as RecipientInfo,
+  );
+  const { loadRecipient } = useRecipient();
+
+  const toggleInfoRecipientModal = useCallback(() => {
+    setOpenInfoModal(!openInfoModal);
+  }, [openInfoModal]);
 
   useEffect(() => {
     async function loadRecipients() {
@@ -34,7 +59,8 @@ const Recipients: React.FC = () => {
       const formmatedRecipient = response.data.map(recipient => {
         return {
           ...recipient,
-          formattedAddress: `${recipient.street}, ${recipient.number}, ${recipient.city}-${recipient.state}`,
+          formattedCity: `${recipient.city} - ${recipient.state}`,
+          formattedStreet: `${recipient.street}, ${recipient.number}`,
         };
       });
       setRecipients(formmatedRecipient);
@@ -43,59 +69,89 @@ const Recipients: React.FC = () => {
     loadRecipients();
   }, []);
 
+  const handleAddRecipientInfo = useCallback((recipient: RecipientData) => {
+    setRecipientInfo({
+      id: recipient.id,
+      formattedStreet: recipient.formattedStreet,
+      formattedCity: recipient.formattedCity,
+      zipcode: recipient.zipcode,
+    });
+  }, []);
+
   return (
     <>
-      <RecipientProvider>
-        <Container>
-          <Header />
-          <Content>
-            <h1>Gerenciando destinatários</h1>
+      <Container>
+        <Header />
 
-            <ContentHeader>
-              <SearchInput
-                type="text"
-                icon={FiSearch}
-                placeholder="Buscar por destinatários"
-              />
+        <ContentHeader>
+          <h1>Gerenciando entregadores</h1>
 
-              <Link to="/recipients/create-recipient">
-                <FiPlus size={22} color="#FFFFFF" />
-                Cadastrar
-              </Link>
-            </ContentHeader>
+          <div>
+            <SearchInput
+              icon={FiSearch}
+              type="text"
+              placeholder="Buscar por entregadores"
+            />
 
-            {recipients.length === 0 ? (
-              <span>Ainda não possui nenhum destinatário cadastrado</span>
-            ) : (
-              <table>
-                <thead>
-                  <tr>
-                    <th>id</th>
-                    <th>Nome</th>
-                    <th>Endereço</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
+            <Link to="/recipients/create-recipient">
+              <FiPlus size={22} color="#FFFFFF" />
+              Cadastrar
+            </Link>
+          </div>
+        </ContentHeader>
 
-                <tbody>
-                  {recipients &&
-                    recipients.map(recipient => (
-                      <tr key={recipient.id}>
-                        <td>{recipient.id}</td>
-                        <td>{recipient.name}</td>
-                        <td>{recipient.formattedAddress}</td>
+        <Content>
+          {recipients.length === 0 ? (
+            <span>Ainda nao possui nenhum cadastro</span>
+          ) : (
+            recipients.map(recipient => (
+              <Box key={recipient.id}>
+                <section>
+                  <FiUser size={28} />
+                  {recipient.name}
+                </section>
 
-                        <td>
-                          <OptionRecipientButton recipient={recipient} />
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            )}
-          </Content>
-        </Container>
-      </RecipientProvider>
+                <RecipientInfo>
+                  <span>
+                    <strong>Id:</strong>
+                    {recipient.id}
+                  </span>
+
+                  <span>
+                    <strong>Endereço: </strong>
+                  </span>
+
+                  <span style={{ height: '40px', margin: '0' }}>
+                    {recipient.formattedStreet}
+                  </span>
+
+                  <span>{recipient.formattedCity}</span>
+
+                  <Separator />
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      loadRecipient(recipient);
+                      handleAddRecipientInfo(recipient);
+                      setOpenInfoModal(true);
+                    }}
+                  >
+                    Detalhes
+                  </button>
+                </RecipientInfo>
+              </Box>
+            ))
+          )}
+        </Content>
+
+        {openInfoModal && (
+          <InfoRecipientModal
+            setOpenModal={toggleInfoRecipientModal}
+            recipient_info={recipientInfo}
+          />
+        )}
+      </Container>
     </>
   );
 };

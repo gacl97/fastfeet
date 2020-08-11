@@ -13,6 +13,8 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 
+import { useRecipient } from '../../../hooks/recipient';
+
 import {
   Container,
   Content,
@@ -40,7 +42,7 @@ interface RecipientFormData {
 const RecipientEditForm: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
-  const { id } = useParams();
+  const { recipient } = useRecipient();
 
   const handleSubmit = useCallback(
     async (data: RecipientFormData) => {
@@ -61,7 +63,7 @@ const RecipientEditForm: React.FC = () => {
           abortEarly: false,
         });
 
-        // await api.put('/recipients', data);
+        await api.put(`/recipients/${recipient.id}`, data);
 
         history.push('/recipients');
       } catch (err) {
@@ -70,7 +72,7 @@ const RecipientEditForm: React.FC = () => {
         formRef.current?.setErrors(errors);
       }
     },
-    [history],
+    [history, recipient.id],
   );
 
   return (
@@ -94,7 +96,15 @@ const RecipientEditForm: React.FC = () => {
           </ContentHeader>
           <Form
             ref={formRef}
-            // initialData={{ name: recipient.name }}
+            initialData={{
+              name: recipient.name,
+              street: recipient.street,
+              number: recipient.number,
+              complement: recipient.complement,
+              city: recipient.city,
+              state: recipient.state,
+              zipcode: recipient.zipcode,
+            }}
             onSubmit={handleSubmit}
           >
             <h1>Nome</h1>

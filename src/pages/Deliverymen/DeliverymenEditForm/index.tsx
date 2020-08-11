@@ -6,7 +6,7 @@ import {
   FiCheck,
   FiUser,
   FiMail,
-  FiImage,
+  FiCamera,
 } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
@@ -19,6 +19,8 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 
+import { useDeliverer } from '../../../hooks/deliverer';
+
 import { Container, AvatarInput, Content, ContentHeader } from './styles';
 
 interface DeliverymenFormData {
@@ -30,6 +32,7 @@ const DeliverymenForm: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
   const { id } = useParams();
+  const { deliverer } = useDeliverer();
 
   const handleAvatarChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -94,14 +97,28 @@ const DeliverymenForm: React.FC = () => {
 
         <Content>
           <AvatarInput>
+            <img
+              src={
+                deliverer.avatar_url ||
+                `https://avatar.oxro.io/avatar.svg?name=${deliverer.name}?height=186`
+              }
+              alt={deliverer.name}
+            />
+
             <label htmlFor="avatar">
               <input type="file" id="avatar" onChange={handleAvatarChange} />
-              <FiImage />
-              <span>Adicionar foto</span>
+              <FiCamera />
             </label>
           </AvatarInput>
 
-          <Form ref={formRef} onSubmit={handleSubmit}>
+          <Form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            initialData={{
+              name: deliverer.name,
+              email: deliverer.email,
+            }}
+          >
             <h1>Nome</h1>
             <Input name="name" icon={FiUser} type="text" placeholder="Nome" />
 

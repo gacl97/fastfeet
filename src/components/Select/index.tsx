@@ -15,7 +15,7 @@ interface SelectProps extends ReactSelectProps<OptionTypeBase> {
 
 const Select: React.FC<SelectProps> = ({ name, ...rest }) => {
   const selectRef = useRef(null);
-  const { fieldName, registerField, error } = useField(name);
+  const { fieldName, registerField, error, defaultValue } = useField(name);
 
   useEffect(() => {
     registerField({
@@ -53,6 +53,8 @@ const Select: React.FC<SelectProps> = ({ name, ...rest }) => {
           styles={customStyles}
           cacheOptions
           ref={selectRef}
+          defaultValue={defaultValue}
+          defaultInputValue={defaultValue}
           classNamePrefix="react-select"
           {...rest}
         />

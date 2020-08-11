@@ -1,12 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useEffect,
-} from 'react';
-
-import api from '../services/api';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
 interface Recipient {
   id: string;
@@ -17,12 +9,13 @@ interface Recipient {
   city: string;
   state: string;
   zipcode: string;
-  formattedAddress: string;
+  formattedStreet: string;
+  formattedCity: string;
 }
 
 interface RecipientContextData {
-  // recipients: Recipient[];
-  // loadRecipients(): void;
+  recipient: Recipient;
+  loadRecipient(recipient: Recipient): void;
 }
 
 const RecipientContext = createContext<RecipientContextData>(
@@ -30,24 +23,15 @@ const RecipientContext = createContext<RecipientContextData>(
 );
 
 const RecipientProvider: React.FC = ({ children }) => {
-  const [data, setData] = useState<Recipient[]>([] as Recipient[]);
+  const [data, setData] = useState<Recipient>({} as Recipient);
 
-  const loadRecipients = useCallback(async () => {
-    // const response = await api.get<Recipient[]>('/recipients');
-    // console.log(response.data);
-    // const formmatedRecipient = response.data.map(recipient => {
-    //   return {
-    //     ...recipient,
-    //     formattedAddress: `${recipient.street}, ${recipient.number}, ${recipient.city}-${recipient.state}`,
-    //   };
-    // });
-    // console.log(formmatedRecipient);
-    // setData(formmatedRecipient);
+  const loadRecipient = useCallback((recipient: Recipient) => {
+    setData(recipient);
   }, []);
 
   return (
     <>
-      <RecipientContext.Provider value={{}}>
+      <RecipientContext.Provider value={{ recipient: data, loadRecipient }}>
         {children}
       </RecipientContext.Provider>
     </>

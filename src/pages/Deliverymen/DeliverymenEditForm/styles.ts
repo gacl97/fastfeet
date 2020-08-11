@@ -95,16 +95,16 @@ export const ContentHeader = styled.header`
 `;
 
 export const AvatarInput = styled.div`
-  height: 150px;
-  width: 150px;
-  border-radius: 50%;
-  border: 1px dashed #dddddd;
-
-  display: flex;
-  justify-content: center;
+  position: relative;
   align-self: center;
 
   margin-top: 25px;
+
+  img {
+    width: 186px;
+    height: 186px;
+    border-radius: 50%;
+  }
 
   label {
     cursor: pointer;
@@ -113,20 +113,33 @@ export const AvatarInput = styled.div`
     flex-direction: column;
     align-items: center;
 
+    position: absolute;
+    border: 0;
+    right: 0;
+    bottom: 0;
+
+    background: #7d40e7;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+
     > input {
       display: none;
     }
 
-    > svg {
-      height: 40px;
-      width: 40px;
-      color: #dddddd;
+    svg {
+      width: 20px;
+      height: 20px;
+      color: #312e38;
     }
 
     > span {
       font-size: 16px;
       font-weight: 500;
       color: #dddddd;
+    }
+    &:hover {
+      background: ${shade(0.2, '#7d40e7')};
     }
   }
 `;

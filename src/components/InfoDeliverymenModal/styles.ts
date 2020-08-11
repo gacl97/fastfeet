@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { shade } from 'polished';
 
 export const Container = styled.div`
@@ -19,7 +19,7 @@ export const Container = styled.div`
 
 export const Box = styled.div`
   width: 450px;
-  height: 450px;
+  height: 350px;
 
   background: #ffffff;
   border-radius: 4px;
@@ -48,66 +48,29 @@ export const Header = styled.div`
   }
 `;
 
-export const HeaderContent = styled.div`
+export const Content = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 4px;
+  margin-top: 10px;
 
   span {
-    font-size: 16px;
-    color: #666666;
-  }
-`;
-
-export const Separator = styled.div`
-  margin-top: 10px;
-  border-bottom: 1px solid #999;
-`;
-
-export const Dates = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-
-  h1 {
-    color: #444444;
-    font-size: 14px;
-    margin-bottom: 4px;
-  }
-
-  span {
-    > strong {
-      font-weight: 500;
-    }
-
     font-size: 16px;
     color: #666666;
 
     & + span {
-      margin-top: 5px;
+      margin-top: 6px;
+    }
+
+    > strong {
+      font-weight: 500;
+      margin-right: 5px;
     }
   }
 `;
 
-export const Signature = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  h1 {
-    align-self: flex-start;
-    color: #444444;
-    font-size: 14px;
-    margin-bottom: 4px;
-  }
-
-  > img {
-    margin-top: 23px;
-    width: 235px;
-    height: 36px;
-  }
+export const Separator = styled.div`
+  margin-top: 18px;
+  border-bottom: 1px solid #999;
 `;
 
 export const Footer = styled.footer`

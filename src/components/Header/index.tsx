@@ -5,7 +5,7 @@ import { Container, HeaderContent, HeaderContainer, Menu } from './styles';
 
 import { useAuth } from '../../hooks/auth';
 
-import logoImg from '../../assets/logo.png';
+import logoImg from '../../assets/logo.svg';
 
 const Header: React.FC = () => {
   const { signOut } = useAuth();

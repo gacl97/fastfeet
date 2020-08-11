@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { FiMail, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
@@ -6,14 +6,14 @@ import { Form } from '@unform/web';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import logoImg from '../../assets/logo.png';
+import logoImg from '../../assets/logo.svg';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 import { useAuth } from '../../hooks/auth';
 
-import { Container, Content } from './styles';
+import { Container, Content, ButtonTypes } from './styles';
 
 interface SignInFormData {
   email: string;
@@ -22,6 +22,7 @@ interface SignInFormData {
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const [adminButton, setAdminButton] = useState(true);
 
   const { signIn } = useAuth();
 
@@ -34,16 +35,19 @@ const SignIn: React.FC = () => {
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Digite um e-mail válido'),
-          password: Yup.string().min(6, 'No mínimo 6 dígitos'),
+          password: Yup.string().required('Senha obrigatória'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
+        const role = adminButton ? 'admin' : 'deliverer';
+
         signIn({
           email: data.email,
           password: data.password,
+          role,
         });
       } catch (err) {
         const errors = getValidationErrors(err);
@@ -51,7 +55,7 @@ const SignIn: React.FC = () => {
         formRef.current?.setErrors(errors);
       }
     },
-    [signIn],
+    [signIn, adminButton],
   );
 
   return (
@@ -59,6 +63,15 @@ const SignIn: React.FC = () => {
       <Container>
         <Content>
           <img src={logoImg} alt="FastFeet" />
+
+          <ButtonTypes adminIsSelected={adminButton}>
+            <button type="button" onClick={() => setAdminButton(true)}>
+              Admin
+            </button>
+            <button type="button" onClick={() => setAdminButton(false)}>
+              Entregador
+            </button>
+          </ButtonTypes>
 
           <Form ref={formRef} onSubmit={handleSubmit}>
             <h1>Seu e-mail</h1>

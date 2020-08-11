@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { FiSearch, FiPlus, FiCircle } from 'react-icons/fi';
-import { Form } from '@unform/web';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { FiSearch, FiPlus, FiCircle, FiPackage } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
@@ -8,10 +7,30 @@ import formatDate from '../../utils/formatDate';
 
 import Header from '../../components/Header';
 import SearchInput from '../../components/SearchInput';
+import InfoOrderModal from '../../components/InfoOrderModal';
 
-import { Container, Content, ContentHeader, Status } from './styles';
+import { useOrder } from '../../hooks/order';
 
-import OptionOrderButton from '../../components/OptionOrderButton';
+import {
+  Container,
+  Content,
+  Box,
+  OrderInfo,
+  Separator,
+  OrderDeliverer,
+  ContentHeader,
+  DelivererInfo,
+  Status,
+} from './styles';
+
+interface OrderInfo {
+  order_id: string;
+  street: string;
+  city: string;
+  zipcode: string;
+  withdrawalDate: string;
+  deliveryDate: string;
+}
 
 interface Order {
   id: string;
@@ -27,6 +46,7 @@ interface Order {
     name: string;
     avatar_url: string;
   };
+  product: string;
   canceled_at: Date | undefined;
   start_date: Date | undefined;
   end_date: Date | undefined;
@@ -40,6 +60,13 @@ interface Order {
 
 const Orders: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [orderInfo, setOrderInfo] = useState<OrderInfo>({} as OrderInfo);
+  const { loadOrder } = useOrder();
+
+  const toggleInfoModal = useCallback(() => {
+    setOpenInfoModal(!openInfoModal);
+  }, [openInfoModal]);
 
   useEffect(() => {
     async function loadOrders() {
@@ -66,6 +93,17 @@ const Orders: React.FC = () => {
     loadOrders();
   }, []);
 
+  const handleSetAddress = useCallback((order: Order) => {
+    setOrderInfo({
+      order_id: order.id,
+      city: order.formattedCity,
+      street: order.recipient.street,
+      zipcode: order.formattedZipCode,
+      withdrawalDate: order.formattedStartDate,
+      deliveryDate: order.formattedEndDate,
+    });
+  }, []);
+
   const typeDeliveryStatus = useMemo(() => {
     return {
       delivered: 'Entregue',
@@ -79,10 +117,11 @@ const Orders: React.FC = () => {
     <>
       <Container>
         <Header />
-        <Content>
+
+        <ContentHeader>
           <h1>Gerenciando encomendas</h1>
 
-          <ContentHeader>
+          <div>
             <SearchInput
               icon={FiSearch}
               type="text"
@@ -93,68 +132,79 @@ const Orders: React.FC = () => {
               <FiPlus size={22} color="#FFFFFF" />
               Cadastrar
             </Link>
-          </ContentHeader>
+          </div>
+        </ContentHeader>
 
+        <Content>
           {orders.length === 0 ? (
-            <span>Ainda não possui nenhuma encomenda cadastrada</span>
+            <span>Ainda nao possui nenhum cadastro</span>
           ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>id</th>
-                  <th>Destinatário</th>
-                  <th>Entregador</th>
-                  <th>Cidade</th>
-                  <th>Estado</th>
-                  <th>Status</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
+            orders.map(order => (
+              <Box key={order.id}>
+                <span>
+                  <FiPackage />
+                  {order.recipient.name}
+                </span>
 
-              <tbody>
-                {orders &&
-                  orders.map(order => (
-                    <tr key={order.id}>
-                      <td>{order.id}</td>
-                      <td>{order.recipient.name}</td>
+                <OrderInfo>
+                  <span>
+                    <strong>Pedido:</strong>
+                    {order.id}
+                  </span>
 
-                      <td>
-                        <section>
-                          <img
-                            src={
-                              order.deliveryman.avatar_url ||
-                              `https://api.adorable.io/avatars/${order.id}`
-                            }
-                            alt={order.deliveryman.name}
-                          />
-                          <span>{order.deliveryman.name}</span>
-                        </section>
-                      </td>
+                  <span>
+                    <strong>{order.formattedStreet}</strong>
+                  </span>
 
-                      <td>{order.recipient.city}</td>
-                      <td>{order.recipient.state}</td>
-                      <td>
-                        <Status type={order.status}>
-                          <FiCircle />
-                          <span>{typeDeliveryStatus[order.status]}</span>
-                        </Status>
-                      </td>
-                      <td>
-                        <OptionOrderButton
-                          orderId={order.id}
-                          street={order.formattedStreet}
-                          city={order.formattedCity}
-                          zipcode={order.formattedZipCode}
-                          withdrawalDate={order.formattedStartDate}
-                          deliveryDate={order.formattedEndDate}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+                  <span>
+                    <strong>{order.formattedCity}</strong>
+                  </span>
+
+                  <Separator />
+
+                  <OrderDeliverer>
+                    <DelivererInfo>
+                      <img
+                        src={
+                          order.deliveryman.avatar_url ||
+                          `https://avatar.oxro.io/avatar.svg?name=${order.deliveryman.name}?height=186`
+                        }
+                        alt={order.deliveryman.name}
+                      />
+                      <span>{order.deliveryman.name}</span>
+                    </DelivererInfo>
+
+                    <section>
+                      <strong>Status: </strong>
+                      <Status type="delivered">
+                        <FiCircle />
+                        <span>{typeDeliveryStatus.pending}</span>
+                      </Status>
+                    </section>
+                  </OrderDeliverer>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      loadOrder(order);
+                      handleSetAddress(order);
+                      setOpenInfoModal(true);
+                    }}
+                  >
+                    Detalhes
+                  </button>
+                </OrderInfo>
+              </Box>
+            ))
           )}
         </Content>
+
+        {openInfoModal && (
+          <InfoOrderModal
+            setOpenModal={toggleInfoModal}
+            order_info={orderInfo}
+          />
+        )}
       </Container>
     </>
   );

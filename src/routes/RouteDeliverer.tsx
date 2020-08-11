@@ -11,19 +11,34 @@ interface RouteProps extends ReactRouteDomProps {
   component: React.ComponentType;
 }
 
-const Route: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
+const RouteDeliverer: React.FC<RouteProps> = ({
+  component: Component,
+  ...rest
+}) => {
   const { user, isAdmin } = useAuth();
 
   return (
     <ReactRouteDom
       {...rest}
       render={({ location }) => {
-        return !user ? (
-          <Component />
-        ) : (
+        if (user && !isAdmin) {
+          return <Component />;
+        }
+
+        if (user && isAdmin) {
+          return (
+            <Redirect
+              to={{
+                pathname: '/orders',
+                state: location,
+              }}
+            />
+          );
+        }
+        return (
           <Redirect
             to={{
-              pathname: isAdmin ? '/orders' : '/ordersDeliverer',
+              pathname: '/',
               state: location,
             }}
           />
@@ -33,4 +48,4 @@ const Route: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
   );
 };
 
-export default Route;
+export default RouteDeliverer;

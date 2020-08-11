@@ -1,7 +1,9 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 
+import RouteAdmin from './RouteAdmin';
 import Route from './Route';
+import RouteDeliverer from './RouteDeliverer';
 
 import signIn from '../pages/SignIn';
 
@@ -18,40 +20,42 @@ import DeliverymenEditForm from '../pages/Deliverymen/DeliverymenEditForm';
 import Orders from '../pages/Orders';
 import OrdersForm from '../pages/Orders/OrdersForm';
 import OrdersEditForm from '../pages/Orders/OrdersEditForm';
+import Teste from '../pages/NotFound';
 
 const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={signIn} />
 
-    <Route path="/delivery/problems" component={DeliveryProblems} isPrivate />
+    <RouteAdmin path="/delivery/problems" component={DeliveryProblems} />
 
-    <Route path="/deliverymen" exact component={Deliverymen} isPrivate />
-    <Route
+    <RouteAdmin path="/deliverymen" exact component={Deliverymen} />
+    <RouteAdmin
       path="/deliverymen/create-deliverymen"
       component={DeliverymenForm}
-      isPrivate
     />
-    <Route
+    <RouteAdmin
       path="/deliverymen/edit-deliverymen/:id"
       component={DeliverymenEditForm}
-      isPrivate
     />
 
-    <Route path="/orders" exact component={Orders} isPrivate />
-    <Route path="/orders/create-order" component={OrdersForm} isPrivate />
-    <Route path="/orders/edit-order/:id" component={OrdersEditForm} isPrivate />
+    <RouteAdmin path="/orders" exact component={Orders} />
+    <RouteAdmin path="/orders/create-order" component={OrdersForm} />
+    <RouteAdmin path="/orders/edit-order/:id" component={OrdersEditForm} />
 
-    <Route path="/recipients" exact component={Recipients} isPrivate />
-    <Route
-      path="/recipients/create-recipient"
-      component={RecipientForm}
-      isPrivate
-    />
-    <Route
+    <RouteAdmin path="/recipients" exact component={Recipients} />
+    <RouteAdmin path="/recipients/create-recipient" component={RecipientForm} />
+    <RouteAdmin
       path="/recipients/edit-recipient/:id"
       component={RecipientEditForm}
-      isPrivate
     />
+
+    {/* <RouteAdmin
+      path="ordersDeliverer"
+      component={RecipientEditForm}
+      isPrivate
+    /> */}
+
+    <RouteDeliverer path="/ordersDeliverer" exact component={Teste} />
   </Switch>
 );
 

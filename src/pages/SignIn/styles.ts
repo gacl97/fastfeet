@@ -1,4 +1,9 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { shade } from 'polished';
+
+interface ButtonProps {
+  adminIsSelected: boolean;
+}
 
 export const Container = styled.div`
   height: 100vh;
@@ -9,7 +14,6 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
   background: #fff;
@@ -20,7 +24,7 @@ export const Content = styled.div`
   max-width: 430px;
 
   form {
-    margin: 40px 0;
+    margin-top: 10px;
     width: 310px;
     text-align: center;
 
@@ -36,15 +40,52 @@ export const Content = styled.div`
       margin-top: 15px;
     }
 
-    button {
+    > button {
       width: 100%;
     }
   }
 
-  img {
-    max-width: 300px;
-    max-height: 300px;
-    width: auto;
-    height: auto;
+  > img {
+    margin-top: 80px;
+    width: 300px;
+    height: 80px;
+  }
+`;
+
+export const ButtonTypes = styled.div<ButtonProps>`
+  display: flex;
+  width: 100%;
+  max-width: 310px;
+
+  > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    background: transparent;
+    border: 0;
+    transition: background-color 0.2s;
+
+    ${props =>
+      props.adminIsSelected
+        ? css`
+            &:first-child {
+              border-bottom: 3px solid #7d40e7;
+            }
+          `
+        : css`
+            &:last-child {
+              border-bottom: 3px solid #7d40e7;
+            }
+          `}
+
+    & + button {
+      margin-left: 5px;
+    }
+
+    &:hover {
+      background: ${shade(0.2, '#fff')};
+    }
   }
 `;

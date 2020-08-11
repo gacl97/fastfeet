@@ -1,14 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FiSearch, FiPlus } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
+import formatDate from '../../utils/formatDate';
 
 import Header from '../../components/Header';
 import SearchInput from '../../components/SearchInput';
-import OptionDeliverymenModal from '../../components/OptionDeliverymenModal';
+import InfoDeliverymenModal from '../../components/InfoDeliverymenModal';
 
-import { Container, Content, ContentHeader } from './styles';
+import { useDeliverer } from '../../hooks/deliverer';
+
+import {
+  Container,
+  Content,
+  Box,
+  DelivererInfo,
+  Separator,
+  ContentHeader,
+} from './styles';
+
+interface DeliverymenInfo {
+  id: string;
+}
 
 interface DelivererData {
   id: string;
@@ -19,6 +33,15 @@ interface DelivererData {
 
 const Deliverymen: React.FC = () => {
   const [deliverers, setDeliverers] = useState<DelivererData[]>([]);
+  const [deliverymenInfo, setDeliverymenInfo] = useState<DeliverymenInfo>(
+    {} as DeliverymenInfo,
+  );
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const { loadDeliverer } = useDeliverer();
+
+  const toggleInfoModal = useCallback(() => {
+    setOpenInfoModal(!openInfoModal);
+  }, [openInfoModal]);
 
   useEffect(() => {
     async function loadDeliverers() {
@@ -29,14 +52,22 @@ const Deliverymen: React.FC = () => {
 
     loadDeliverers();
   }, []);
+
+  const handleSetDeliverymenInfo = useCallback((deliverymen: DelivererData) => {
+    setDeliverymenInfo({
+      id: deliverymen.id,
+    });
+  }, []);
+
   return (
     <>
-      <Header />
       <Container>
-        <Content>
+        <Header />
+
+        <ContentHeader>
           <h1>Gerenciando entregadores</h1>
 
-          <ContentHeader>
+          <div>
             <SearchInput
               icon={FiSearch}
               type="text"
@@ -47,54 +78,61 @@ const Deliverymen: React.FC = () => {
               <FiPlus size={22} color="#FFFFFF" />
               Cadastrar
             </Link>
-          </ContentHeader>
+          </div>
+        </ContentHeader>
 
+        <Content>
           {deliverers.length === 0 ? (
-            <span>Ainda não possui nenhum entregador cadastrado</span>
+            <span>Ainda nao possui nenhum cadastro</span>
           ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>id</th>
-                  <th>Foto</th>
-                  <th>Nome</th>
-                  <th>Email</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
+            deliverers.map(deliverer => (
+              <Box key={deliverer.id}>
+                <section>
+                  <img
+                    src={
+                      deliverer.avatar_url ||
+                      `https://ui-avatars.com/api/?size=128&background=5B4699&color=fff&name=${deliverer.name}`
+                    }
+                    alt={deliverer.name}
+                  />
+                  {deliverer.name}
+                </section>
 
-              <tbody>
-                {deliverers &&
-                  deliverers.map(deliverer => (
-                    <tr key={deliverer.id}>
-                      <td>{deliverer.id}</td>
+                <DelivererInfo>
+                  <span>
+                    <strong>Id:</strong>
+                    {deliverer.id}
+                  </span>
 
-                      <td>
-                        <img
-                          src={
-                            deliverer.avatar_url ||
-                            `https://api.adorable.io/avatars/${deliverer.name}`
-                          }
-                          alt={deliverer.name}
-                        />
-                      </td>
+                  <span>
+                    <strong>Email: </strong>
+                    {deliverer.email}
+                  </span>
 
-                      <td>{deliverer.name}</td>
-                      <td>{deliverer.email}</td>
+                  <Separator />
 
-                      <td>
-                        <button type="button">
-                          <OptionDeliverymenModal
-                            deliverymenId={deliverer.id}
-                          />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleSetDeliverymenInfo(deliverer);
+                      loadDeliverer(deliverer);
+                      setOpenInfoModal(true);
+                    }}
+                  >
+                    Detalhes
+                  </button>
+                </DelivererInfo>
+              </Box>
+            ))
           )}
         </Content>
+
+        {openInfoModal && (
+          <InfoDeliverymenModal
+            setOpenModal={toggleInfoModal}
+            deliverymen_info={deliverymenInfo}
+          />
+        )}
       </Container>
     </>
   );

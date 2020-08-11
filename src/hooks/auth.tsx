@@ -1,4 +1,11 @@
-import React, { createContext, useCallback, useState, useContext } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useState,
+  useContext,
+  useEffect,
+} from 'react';
+import { useHistory } from 'react-router-dom';
 import api from '../services/api';
 
 interface AuthenticateDataState {
@@ -9,42 +16,107 @@ interface AuthenticateDataState {
 interface SignInCredentials {
   email: string;
   password: string;
+  role: 'admin' | 'deliverer';
 }
 
 interface AuthContextData {
   user: object;
   signIn(credentials: SignInCredentials): void;
   signOut(): void;
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [data, setData] = useState<AuthenticateDataState>(() => {
-    const token = localStorage.getItem('@Fastfeet:token');
-    const user = localStorage.getItem('@Fastfeet:user');
+  const [data, setData] = useState<AuthenticateDataState>(
+    {} as AuthenticateDataState,
+  );
+  const [isAdminData, setIsAdminData] = useState<boolean>(true);
+  const history = useHistory();
 
-    if (token && user) {
-      api.defaults.headers.authorization = `Bearer ${token}`; // Setar token de forma global nos headers para todas requisicoes verem o token
+  useEffect(() => {
+    async function loadUser() {
+      const token = localStorage.getItem('@Fastfeet:token');
+      const user = localStorage.getItem('@Fastfeet:user');
+      const adminBack = localStorage.getItem('@Fastfeet:admin');
 
-      return {
-        token,
-        user: JSON.parse(user),
-      };
+      if (token && user && adminBack) {
+        api.defaults.headers.authorization = `Bearer ${token}`; // Setar token de forma global nos headers para todas requisicoes verem o token
+
+        setData({
+          token,
+          user: JSON.parse(user),
+        });
+
+        setIsAdminData(JSON.parse(adminBack));
+      }
     }
 
-    return {} as AuthenticateDataState;
-  });
+    loadUser();
+  }, []);
+
+  window.addEventListener(
+    'storage',
+    async function teste() {
+      const token = localStorage.getItem('@Fastfeet:token');
+      api.defaults.headers.authorization = `Bearer ${token}`;
+      await api.get('/api/account');
+
+      localStorage.removeItem('@Fastfeet:token');
+      localStorage.removeItem('@Fastfeet:user');
+      localStorage.removeItem('@Fastfeet:admin');
+      setData({} as AuthenticateDataState);
+    },
+    false,
+  );
+
+  const signIn = useCallback(
+    async ({ email, password, role }: SignInCredentials) => {
+      const response = await api.post('sessions', {
+        email,
+        password,
+        role,
+      });
+
+      const { token, user, isAdmin: adminBack } = response.data;
+
+      localStorage.setItem('@Fastfeet:token', token);
+      localStorage.setItem('@Fastfeet:user', JSON.stringify(user));
+      localStorage.setItem('@Fastfeet:admin', JSON.stringify(adminBack));
+
+      api.defaults.headers.authorization = `Bearer ${token}`; // Setar token de forma global nos headers para todas requisicoes verem o token
+
+      setData({ token, user });
+      setIsAdminData(role === 'admin');
+
+      if (role === 'admin') {
+        history.push('orders');
+      } else {
+        history.push('ordersDeliverer');
+      }
+    },
+    [history],
+  );
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@Fastfeet:token');
     localStorage.removeItem('@Fastfeet:user');
+    localStorage.removeItem('@Fastfeet:admin');
 
     setData({} as AuthenticateDataState);
-  }, []);
+    history.push('/');
+  }, [history]);
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user: data.user,
+        signIn,
+        signOut,
+        isAdmin: isAdminData,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
