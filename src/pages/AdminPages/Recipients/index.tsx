@@ -2,14 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { FiSearch, FiPlus, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
-import api from '../../services/api';
-import formatDate from '../../utils/formatDate';
+import api from '../../../services/api';
 
-import Header from '../../components/Header';
-import SearchInput from '../../components/SearchInput';
-import InfoRecipientModal from '../../components/InfoRecipientModal';
+import Header from '../../../components/Header';
+import SearchInput from '../../../components/SearchInput';
+import InfoRecipientModal from '../../../components/InfoRecipientModal';
 
-import { useRecipient } from '../../hooks/recipient';
+import { useRecipient } from '../../../hooks/recipient';
 
 import {
   Container,

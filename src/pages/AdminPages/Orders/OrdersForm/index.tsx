@@ -3,18 +3,16 @@ import * as Yup from 'yup';
 import { FiChevronLeft, FiCheck } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
-import api from '../../../services/api';
+import api from '../../../../services/api';
 
-import getValidationErrors from '../../../utils/getValidationErrors';
+import getValidationErrors from '../../../../utils/getValidationErrors';
 
-import Header from '../../../components/Header';
-import Button from '../../../components/Button';
-import Input from '../../../components/Input';
-import Select from '../../../components/Select';
-
-import { useOrder } from '../../../hooks/order';
+import Header from '../../../../components/Header';
+import Button from '../../../../components/Button';
+import Input from '../../../../components/Input';
+import Select from '../../../../components/Select';
 
 import {
   Container,
@@ -51,13 +49,11 @@ interface OrderFormData {
   product: string;
 }
 
-const OrdersEditForm: React.FC = () => {
+const OrdersForm: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const [recipients, setRecipients] = useState<RecipientFormatted[]>([]);
   const [deliverers, setDeliverers] = useState<DelivererFormatted[]>([]);
-  const { order } = useOrder();
   const history = useHistory();
-  const { id } = useParams();
 
   useEffect(() => {
     async function loadRecipients() {
@@ -108,8 +104,7 @@ const OrdersEditForm: React.FC = () => {
           abortEarly: false,
         });
 
-        await api.put(`/deliveries/${id}`, data);
-
+        await api.post('/deliveries', data);
         history.push('/orders');
       } catch (err) {
         const errors = getValidationErrors(err);
@@ -117,7 +112,7 @@ const OrdersEditForm: React.FC = () => {
         formRef.current?.setErrors(errors);
       }
     },
-    [history, id],
+    [history],
   );
 
   return (
@@ -126,7 +121,7 @@ const OrdersEditForm: React.FC = () => {
         <Header />
         <Content>
           <ContentHeader>
-            <h1>Edição de encomendas</h1>
+            <h1>Cadastro de encomendas</h1>
 
             <div>
               <Link to="/orders">
@@ -140,15 +135,7 @@ const OrdersEditForm: React.FC = () => {
             </div>
           </ContentHeader>
 
-          <Form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            initialData={{
-              recipient_id: order.recipient,
-              deliveryman_id: order.deliveryman,
-              product: order.product,
-            }}
-          >
+          <Form ref={formRef} onSubmit={handleSubmit}>
             <SelectOptions>
               <SelectContainer>
                 <h1>Destinatário</h1>
@@ -180,4 +167,4 @@ const OrdersEditForm: React.FC = () => {
   );
 };
 
-export default OrdersEditForm;
+export default OrdersForm;

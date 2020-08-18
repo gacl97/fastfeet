@@ -35,6 +35,7 @@ const RouteDeliverer: React.FC<RouteProps> = ({
             />
           );
         }
+
         return (
           <Redirect
             to={{

@@ -8,6 +8,10 @@ import React, {
 import { useHistory } from 'react-router-dom';
 import api from '../services/api';
 
+interface VerifyToken {
+  error: object;
+}
+
 interface AuthenticateDataState {
   user: object;
   token: string;
@@ -29,32 +33,83 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [data, setData] = useState<AuthenticateDataState>(
-    {} as AuthenticateDataState,
-  );
-  const [isAdminData, setIsAdminData] = useState<boolean>(true);
-  const history = useHistory();
+  const [isAdminData, setIsAdminData] = useState<boolean>(() => {
+    const adminBack = localStorage.getItem('@Fastfeet:admin');
 
-  useEffect(() => {
-    async function loadUser() {
-      const token = localStorage.getItem('@Fastfeet:token');
-      const user = localStorage.getItem('@Fastfeet:user');
-      const adminBack = localStorage.getItem('@Fastfeet:admin');
+    if (adminBack) {
+      return JSON.parse(adminBack);
+    }
+    return true;
+  });
+  const [data, setData] = useState<AuthenticateDataState>(() => {
+    const token = localStorage.getItem('@Fastfeet:token');
 
-      if (token && user && adminBack) {
-        api.defaults.headers.authorization = `Bearer ${token}`; // Setar token de forma global nos headers para todas requisicoes verem o token
+    // const response = await api.get<VerifyToken>('/api/account');
 
-        setData({
-          token,
-          user: JSON.parse(user),
-        });
+    // const { error } = response.data;
 
-        setIsAdminData(JSON.parse(adminBack));
-      }
+    // if (error) {
+    //   signOut();
+    //   return;
+    // }
+
+    const user = localStorage.getItem('@Fastfeet:user');
+    const adminBack = localStorage.getItem('@Fastfeet:admin');
+
+    if (token && user && adminBack) {
+      api.defaults.headers.authorization = `Bearer ${token}`; // Setar token de forma global nos headers para todas requisicoes verem o token
+
+      setIsAdminData(JSON.parse(adminBack));
+      return {
+        token,
+        user: JSON.parse(user),
+      };
     }
 
-    loadUser();
-  }, []);
+    return {} as AuthenticateDataState;
+  });
+
+  const history = useHistory();
+
+  const signOut = useCallback(() => {
+    localStorage.removeItem('@Fastfeet:token');
+    localStorage.removeItem('@Fastfeet:user');
+    localStorage.removeItem('@Fastfeet:admin');
+
+    setData({} as AuthenticateDataState);
+    history.push('/');
+  }, [history]);
+
+  // useEffect(() => {
+  //   async function loadUser() {
+  //     const token = localStorage.getItem('@Fastfeet:token');
+
+  //     // const response = await api.get<VerifyToken>('/api/account');
+
+  //     // const { error } = response.data;
+
+  //     // if (error) {
+  //     //   signOut();
+  //     //   return;
+  //     // }
+
+  //     const user = localStorage.getItem('@Fastfeet:user');
+  //     const adminBack = localStorage.getItem('@Fastfeet:admin');
+
+  //     if (token && user && adminBack) {
+  //       api.defaults.headers.authorization = `Bearer ${token}`; // Setar token de forma global nos headers para todas requisicoes verem o token
+
+  //       setData({
+  //         token,
+  //         user: JSON.parse(user),
+  //       });
+
+  //       setIsAdminData(JSON.parse(adminBack));
+  //     }
+  //   }
+
+  //   loadUser();
+  // }, []);
 
   window.addEventListener(
     'storage',
@@ -93,20 +148,11 @@ const AuthProvider: React.FC = ({ children }) => {
       if (role === 'admin') {
         history.push('orders');
       } else {
-        history.push('ordersDeliverer');
+        history.push('availableOrders');
       }
     },
     [history],
   );
-
-  const signOut = useCallback(() => {
-    localStorage.removeItem('@Fastfeet:token');
-    localStorage.removeItem('@Fastfeet:user');
-    localStorage.removeItem('@Fastfeet:admin');
-
-    setData({} as AuthenticateDataState);
-    history.push('/');
-  }, [history]);
 
   return (
     <AuthContext.Provider

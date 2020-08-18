@@ -5,13 +5,13 @@ import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { Link, useHistory } from 'react-router-dom';
 
-import api from '../../../services/api';
+import api from '../../../../services/api';
 
-import getValidationErrors from '../../../utils/getValidationErrors';
+import getValidationErrors from '../../../../utils/getValidationErrors';
 
-import Header from '../../../components/Header';
-import Button from '../../../components/Button';
-import Input from '../../../components/Input';
+import Header from '../../../../components/Header';
+import Button from '../../../../components/Button';
+import Input from '../../../../components/Input';
 
 import { Container, Content, ContentHeader } from './styles';
 

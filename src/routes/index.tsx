@@ -6,21 +6,28 @@ import Route from './Route';
 import RouteDeliverer from './RouteDeliverer';
 
 import signIn from '../pages/SignIn';
+// import NotFound from '../pages/NotFound';
 
-import Recipients from '../pages/Recipients';
-import RecipientForm from '../pages/Recipients/RecipientForm';
-import RecipientEditForm from '../pages/Recipients/RecipientEditForm';
+// Admin Routes
+import Recipients from '../pages/AdminPages/Recipients';
+import RecipientForm from '../pages/AdminPages/Recipients/RecipientForm';
+import RecipientEditForm from '../pages/AdminPages/Recipients/RecipientEditForm';
 
-import DeliveryProblems from '../pages/DeliveryProblems';
+import DeliveryProblems from '../pages/AdminPages/DeliveryProblems';
 
-import Deliverymen from '../pages/Deliverymen';
-import DeliverymenForm from '../pages/Deliverymen/DeliverymenForm';
-import DeliverymenEditForm from '../pages/Deliverymen/DeliverymenEditForm';
+import Deliverymen from '../pages/AdminPages/Deliverymen';
+import DeliverymenForm from '../pages/AdminPages/Deliverymen/DeliverymenForm';
+import DeliverymenEditForm from '../pages/AdminPages/Deliverymen/DeliverymenEditForm';
 
-import Orders from '../pages/Orders';
-import OrdersForm from '../pages/Orders/OrdersForm';
-import OrdersEditForm from '../pages/Orders/OrdersEditForm';
-import Teste from '../pages/NotFound';
+import Orders from '../pages/AdminPages/Orders';
+import OrdersForm from '../pages/AdminPages/Orders/OrdersForm';
+import OrdersEditForm from '../pages/AdminPages/Orders/OrdersEditForm';
+
+// Deliverer Routes
+
+import AvailableOrders from '../pages/DelivererPages/AvailableOrders';
+import OrderDetails from '../pages/DelivererPages/OrderDetails';
+import DelivererProfile from '../pages/DelivererPages/DelivererProfile';
 
 const Routes: React.FC = () => (
   <Switch>
@@ -49,13 +56,9 @@ const Routes: React.FC = () => (
       component={RecipientEditForm}
     />
 
-    {/* <RouteAdmin
-      path="ordersDeliverer"
-      component={RecipientEditForm}
-      isPrivate
-    /> */}
-
-    <RouteDeliverer path="/ordersDeliverer" exact component={Teste} />
+    <RouteDeliverer path="/availableOrders" exact component={AvailableOrders} />
+    <RouteDeliverer path="/details/:delivery_id" component={OrderDetails} />
+    <RouteDeliverer path="/profile" component={DelivererProfile} />
   </Switch>
 );
 

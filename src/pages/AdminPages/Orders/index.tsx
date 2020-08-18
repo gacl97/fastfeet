@@ -2,14 +2,14 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FiSearch, FiPlus, FiCircle, FiPackage } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
-import api from '../../services/api';
-import formatDate from '../../utils/formatDate';
+import api from '../../../services/api';
+import formatDate from '../../../utils/formatDate';
 
-import Header from '../../components/Header';
-import SearchInput from '../../components/SearchInput';
-import InfoOrderModal from '../../components/InfoOrderModal';
+import Header from '../../../components/Header';
+import SearchInput from '../../../components/SearchInput';
+import InfoOrderModal from '../../../components/InfoOrderModal';
 
-import { useOrder } from '../../hooks/order';
+import { useOrder } from '../../../hooks/order';
 
 import {
   Container,

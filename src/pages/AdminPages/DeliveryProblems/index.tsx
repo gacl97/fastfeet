@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
-import Header from '../../components/Header';
-import OptionDeliveryProblemButton from '../../components/OptionDeliveryProblemButton';
+import Header from '../../../components/Header';
+import OptionDeliveryProblemButton from '../../../components/OptionDeliveryProblemButton';
 
 import { Container, Content } from './styles';
 

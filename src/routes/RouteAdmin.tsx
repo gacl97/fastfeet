@@ -24,12 +24,11 @@ const RouteAdmin: React.FC<RouteProps> = ({
         if (user && isAdmin) {
           return <Component />;
         }
-
         if (user && !isAdmin) {
           return (
             <Redirect
               to={{
-                pathname: '/ordersDeliverer',
+                pathname: '/availableOrders',
                 state: location,
               }}
             />

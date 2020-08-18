@@ -23,7 +23,7 @@ const Route: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
         ) : (
           <Redirect
             to={{
-              pathname: isAdmin ? '/orders' : '/ordersDeliverer',
+              pathname: isAdmin ? '/orders' : '/availableOrders',
               state: location,
             }}
           />
