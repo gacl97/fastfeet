@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { FiSearch } from 'react-icons/fi';
 
 interface ContainerProps {
   isFocused: boolean;
@@ -11,7 +12,7 @@ export const Container = styled.div<ContainerProps>`
   border-radius: 4px;
   color: #999999;
 
-  padding: 13px;
+  padding: 12px;
 
   div + div {
     margin-bottom: 15px;
@@ -24,6 +25,7 @@ export const Container = styled.div<ContainerProps>`
     background: transparent;
     flex: 1;
     border: 0;
+    font-size: 16px;
 
     &::placeholder {
       color: #999999;
@@ -46,4 +48,9 @@ export const Container = styled.div<ContainerProps>`
     css`
       color: #7d40e7;
     `}
+`;
+
+export const SearchIcon = styled(FiSearch)`
+  height: 20px;
+  width: 20px;
 `;

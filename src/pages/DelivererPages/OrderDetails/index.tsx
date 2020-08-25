@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   FiTruck,
   FiUser,
@@ -12,7 +12,9 @@ import {
   FiCheckCircle,
 } from 'react-icons/fi';
 import { FaCalendarCheck, FaCalendarDay } from 'react-icons/fa';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+
+import api from '../../../services/api';
 
 import Header from '../../../components/HeaderDeliverer';
 
@@ -29,10 +31,21 @@ import {
 
 const OrderDetails: React.FC = () => {
   const history = useHistory();
+  const { delivery_id } = useParams();
 
   const handleClickBackButton = useCallback(() => {
     history.goBack();
   }, [history]);
+
+  useEffect(() => {
+    async function loadOrder() {
+      const response = await api.get(`deliverers/${delivery_id}`);
+
+      console.log(response.data);
+    }
+
+    loadOrder();
+  }, [delivery_id]);
 
   return (
     <>

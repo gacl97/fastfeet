@@ -67,11 +67,7 @@ const Deliverymen: React.FC = () => {
           <h1>Gerenciando entregadores</h1>
 
           <div>
-            <SearchInput
-              icon={FiSearch}
-              type="text"
-              placeholder="Buscar por entregadores"
-            />
+            <SearchInput type="text" placeholder="Buscar por entregadores" />
 
             <Link to="deliverymen/create-deliverymen">
               <FiPlus size={22} color="#FFFFFF" />

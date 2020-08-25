@@ -4,16 +4,12 @@ import React, {
   useState,
   useCallback,
 } from 'react';
-import { IconBaseProps } from 'react-icons';
 
-import { Container } from './styles';
+import { Container, SearchIcon } from './styles';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  icon?: React.ComponentType<IconBaseProps>;
-  default_value?: string;
-}
+type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
-const SearchInput: React.FC<InputProps> = ({ icon: Icon, ...rest }) => {
+const SearchInput: React.FC<InputProps> = ({ ...rest }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -32,7 +28,7 @@ const SearchInput: React.FC<InputProps> = ({ icon: Icon, ...rest }) => {
   return (
     <>
       <Container isFilled={isFilled} isFocused={isFocused}>
-        {Icon && <Icon size={20} />}
+        <SearchIcon />
         <input
           onFocus={handleIsFocused}
           onBlur={handleIsBlur}

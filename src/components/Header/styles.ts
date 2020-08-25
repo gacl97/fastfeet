@@ -4,6 +4,11 @@ import { shade } from 'polished';
 export const Container = styled.div`
   height: 84px;
   background: #ffffff;
+
+  @media (max-width: 1025px) {
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 export const HeaderContainer = styled.div`
@@ -12,10 +17,17 @@ export const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  margin: 0 auto;
+  max-width: 1380px;
+
   > div {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media (max-width: 1025px) {
+      display: none;
+    }
 
     span {
       color: #666666;
@@ -37,33 +49,63 @@ export const HeaderContainer = styled.div`
       }
     }
   }
+  @media (max-width: 1025px) {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+
+    button {
+      border: 0;
+      background: transparent;
+    }
+
+    > div {
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .sign-out-button {
+      display: none;
+    }
+
+    .menu-button {
+      display: none;
+    }
+  }
+`;
+
+export const LogoImg = styled.img`
+  height: 26px;
+  width: 160px;
 `;
 
 export const HeaderContent = styled.header`
   display: flex;
   align-items: center;
-
-  img {
-    height: 26px;
-    width: 160px;
-  }
 `;
 
 export const Menu = styled.div`
-  margin-left: 58px;
+  margin-left: 10px;
   display: flex;
 
-  a {
-    margin-right: 21px;
+  @media (max-width: 1025px) {
+    display: none;
+  }
+
+  > a {
+    margin-right: 10px;
     color: #999999;
     text-decoration: none;
     font-size: 15px;
     text-transform: uppercase;
     font-weight: 500;
     transition: color 0.2s;
+    height: 100%;
 
     &.active {
       color: #444444;
+      border-bottom: 2px solid #7d40e7;
     }
 
     &:hover {

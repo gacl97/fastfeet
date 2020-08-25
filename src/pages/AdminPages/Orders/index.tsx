@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { FiSearch, FiPlus, FiCircle, FiPackage } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import api from '../../../services/api';
@@ -7,30 +6,9 @@ import formatDate from '../../../utils/formatDate';
 
 import Header from '../../../components/Header';
 import SearchInput from '../../../components/SearchInput';
-import InfoOrderModal from '../../../components/InfoOrderModal';
+import OrderCard from '../../../components/OrderCard';
 
-import { useOrder } from '../../../hooks/order';
-
-import {
-  Container,
-  Content,
-  Box,
-  OrderInfo,
-  Separator,
-  OrderDeliverer,
-  ContentHeader,
-  DelivererInfo,
-  Status,
-} from './styles';
-
-interface OrderInfo {
-  order_id: string;
-  street: string;
-  city: string;
-  zipcode: string;
-  withdrawalDate: string;
-  deliveryDate: string;
-}
+import { Container, Main, ContentHeader, OrderCards, PlusIcon } from './styles';
 
 interface Order {
   id: string;
@@ -60,13 +38,6 @@ interface Order {
 
 const Orders: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [openInfoModal, setOpenInfoModal] = useState(false);
-  const [orderInfo, setOrderInfo] = useState<OrderInfo>({} as OrderInfo);
-  const { loadOrder } = useOrder();
-
-  const toggleInfoModal = useCallback(() => {
-    setOpenInfoModal(!openInfoModal);
-  }, [openInfoModal]);
 
   useEffect(() => {
     async function loadOrders() {
@@ -93,118 +64,49 @@ const Orders: React.FC = () => {
     loadOrders();
   }, []);
 
-  const handleSetAddress = useCallback((order: Order) => {
-    setOrderInfo({
-      order_id: order.id,
-      city: order.formattedCity,
-      street: order.recipient.street,
-      zipcode: order.formattedZipCode,
-      withdrawalDate: order.formattedStartDate,
-      deliveryDate: order.formattedEndDate,
-    });
-  }, []);
-
-  const typeDeliveryStatus = useMemo(() => {
-    return {
-      delivered: 'Entregue',
-      pending: 'Pendente',
-      withdrawal: 'Retirada',
-      canceled: 'Cancelada',
-    };
-  }, []);
-
   return (
     <>
+      <Header />
       <Container>
-        <Header />
+        <Main>
+          <ContentHeader>
+            <h1>Gerenciando encomendas</h1>
 
-        <ContentHeader>
-          <h1>Gerenciando encomendas</h1>
+            <div>
+              <SearchInput type="text" placeholder="Buscar por encomendas" />
 
-          <div>
-            <SearchInput
-              icon={FiSearch}
-              type="text"
-              placeholder="Buscar por encomendas"
-            />
+              <Link to="orders/create-order">
+                <PlusIcon />
+                Cadastrar
+              </Link>
+            </div>
+          </ContentHeader>
 
-            <Link to="orders/create-order">
-              <FiPlus size={22} color="#FFFFFF" />
-              Cadastrar
-            </Link>
-          </div>
-        </ContentHeader>
-
-        <Content>
-          {orders.length === 0 ? (
-            <span>Ainda nao possui nenhum cadastro</span>
-          ) : (
-            orders.map(order => (
-              <Box key={order.id}>
-                <span>
-                  <FiPackage />
-                  {order.recipient.name}
-                </span>
-
-                <OrderInfo>
-                  <span>
-                    <strong>Pedido:</strong>
-                    {order.id}
-                  </span>
-
-                  <span>
-                    <strong>{order.formattedStreet}</strong>
-                  </span>
-
-                  <span>
-                    <strong>{order.formattedCity}</strong>
-                  </span>
-
-                  <Separator />
-
-                  <OrderDeliverer>
-                    <DelivererInfo>
-                      <img
-                        src={
-                          order.deliveryman.avatar_url ||
-                          `https://avatar.oxro.io/avatar.svg?name=${order.deliveryman.name}?height=186`
-                        }
-                        alt={order.deliveryman.name}
-                      />
-                      <span>{order.deliveryman.name}</span>
-                    </DelivererInfo>
-
-                    <section>
-                      <strong>Status: </strong>
-                      <Status type="delivered">
-                        <FiCircle />
-                        <span>{typeDeliveryStatus.pending}</span>
-                      </Status>
-                    </section>
-                  </OrderDeliverer>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      loadOrder(order);
-                      handleSetAddress(order);
-                      setOpenInfoModal(true);
-                    }}
-                  >
-                    Detalhes
-                  </button>
-                </OrderInfo>
-              </Box>
-            ))
-          )}
-        </Content>
-
-        {openInfoModal && (
-          <InfoOrderModal
-            setOpenModal={toggleInfoModal}
-            order_info={orderInfo}
-          />
-        )}
+          <OrderCards>
+            {orders.length === 0 ? (
+              <span>Ainda nao possui nenhum cadastro</span>
+            ) : (
+              orders.map(order => (
+                <OrderCard
+                  key={order.id}
+                  order_info={{
+                    id: order.id,
+                    recipient_name: order.recipient.name,
+                    street: order.formattedStreet,
+                    city: order.formattedCity,
+                    deliverer_avatar: order.deliveryman.avatar_url,
+                    deliverer_name: order.deliveryman.name,
+                    status: order.status,
+                    zipcode: order.recipient.zipcode,
+                    withdrawalDate: order.formattedStartDate,
+                    deliveryDate: order.formattedEndDate,
+                    product: order.product,
+                  }}
+                />
+              ))
+            )}
+          </OrderCards>
+        </Main>
       </Container>
     </>
   );

@@ -10,6 +10,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #7d40e7;
 `;
 
 export const Content = styled.div`
