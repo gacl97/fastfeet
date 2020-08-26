@@ -9,6 +9,7 @@ import SearchInput from '../../../components/SearchInput';
 import OrderCard from '../../../components/OrderCard';
 
 import { Container, Main, ContentHeader, OrderCards, PlusIcon } from './styles';
+import formatStatus from '../../../utils/formatStatus';
 
 interface Order {
   id: string;
@@ -34,6 +35,7 @@ interface Order {
   formattedCity: string;
   formattedZipCode: string;
   status: 'delivered' | 'pending' | 'withdrawal' | 'canceled';
+  formattedStatus: string;
 }
 
 const Orders: React.FC = () => {
@@ -56,6 +58,7 @@ const Orders: React.FC = () => {
             ].join(''),
             formattedStartDate: formatDate(order.start_date),
             formattedEndDate: formatDate(order.end_date),
+            formattedStatus: formatStatus({ status: order.status }),
           };
         }),
       );

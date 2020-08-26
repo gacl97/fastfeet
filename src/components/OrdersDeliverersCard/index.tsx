@@ -17,14 +17,16 @@ interface OrdersProps {
   product: string;
   status: 'delivered' | 'pending' | 'withdrawal' | 'canceled';
   formattedStartDate: string;
+  linkPathToDetails: string;
 }
 
-const AvailableOrdersCard: React.FC<OrdersProps> = ({
+const OrdersDeliverersCard: React.FC<OrdersProps> = ({
   id,
   formattedCity,
   product,
   status,
   formattedStartDate,
+  linkPathToDetails,
 }) => {
   return (
     <>
@@ -51,9 +53,9 @@ const AvailableOrdersCard: React.FC<OrdersProps> = ({
           <LineStatus>
             <LineStatusCircle>
               <FiCircle
-                color={status === 'pending' ? '#e6af2e' : '#fff'}
+                color="#e6af2e"
                 style={{
-                  background: status === 'pending' ? '#e6af2e' : '#fff',
+                  background: '#e6af2e',
                 }}
               />
               <span>Aguardando retirada</span>
@@ -61,9 +63,9 @@ const AvailableOrdersCard: React.FC<OrdersProps> = ({
 
             <LineStatusCircle>
               <FiCircle
-                color={status === 'pending' ? '#fff' : '#e6af2e'}
+                color={status !== 'pending' ? '#e6af2e' : '#fff'}
                 style={{
-                  background: status === 'pending' ? '#fff' : '#e6af2e',
+                  background: status !== 'pending' ? '#e6af2e' : '#fff',
                 }}
               />
               <span>Retirada</span>
@@ -71,9 +73,9 @@ const AvailableOrdersCard: React.FC<OrdersProps> = ({
 
             <LineStatusCircle>
               <FiCircle
-                color={status === 'pending' ? '#fff' : '#e6af2e'}
+                color={status === 'delivered' ? '#e6af2e' : '#fff'}
                 style={{
-                  background: status === 'pending' ? '#fff' : '#e6af2e',
+                  background: status === 'delivered' ? '#e6af2e' : '#fff',
                 }}
               />
               <span>Entregue</span>
@@ -87,11 +89,11 @@ const AvailableOrdersCard: React.FC<OrdersProps> = ({
             <span id="date">{formattedStartDate}</span>
           </section>
 
-          <Link to={`/details/${id}`}>ver detalhes</Link>
+          <Link to={`${linkPathToDetails}${id}`}>ver detalhes</Link>
         </Footer>
       </Container>
     </>
   );
 };
 
-export default AvailableOrdersCard;
+export default OrdersDeliverersCard;

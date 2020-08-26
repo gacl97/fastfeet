@@ -22,14 +22,12 @@ interface DeliveriesData {
   formattedCity: string;
 }
 
-const AvailableOrders: React.FC = () => {
+const WithdrawnDeliveries: React.FC = () => {
   const [deliveries, setDeliveries] = useState<DeliveriesData[]>([]);
 
   useEffect(() => {
     async function loadDeliveries() {
-      const response = await api.get<DeliveriesData[]>(
-        '/deliverers/deliveries',
-      );
+      const response = await api.get<DeliveriesData[]>('/deliverers/pending');
 
       setDeliveries(
         response.data.map(delivery => {
@@ -52,7 +50,7 @@ const AvailableOrders: React.FC = () => {
         <Main>
           <OrderCards>
             {deliveries.length === 0 ? (
-              <span>Você não possui nenhuma entrega pendente</span>
+              <span>Você ainda não fez nenhuma retirada</span>
             ) : (
               deliveries.map(delivery => (
                 <OrdersDeliverersCard
@@ -62,7 +60,7 @@ const AvailableOrders: React.FC = () => {
                   formattedStartDate={delivery.formattedStartDate}
                   product={delivery.product}
                   status={delivery.status}
-                  linkPathToDetails="/details/"
+                  linkPathToDetails="/pending/details/"
                 />
               ))
             )}
@@ -73,4 +71,4 @@ const AvailableOrders: React.FC = () => {
   );
 };
 
-export default AvailableOrders;
+export default WithdrawnDeliveries;

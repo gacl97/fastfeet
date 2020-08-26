@@ -26,8 +26,13 @@ import OrdersEditForm from '../pages/AdminPages/Orders/OrdersEditForm';
 // Deliverer Routes
 
 import AvailableOrders from '../pages/DelivererPages/AvailableOrders';
-import OrderDetails from '../pages/DelivererPages/OrderDetails';
 import DelivererProfile from '../pages/DelivererPages/DelivererProfile';
+import WithdrawnDeliveries from '../pages/DelivererPages/WithdrawnDeliveries';
+import CompleteOrders from '../pages/DelivererPages/CompleteOrders';
+
+import AvailableOrderDetails from '../pages/DelivererPages/AvailableOrderDetails';
+import CompleteOrderDetails from '../pages/DelivererPages/CompleteOrderDetails';
+import PendingOrderDetails from '../pages/DelivererPages/PendingOrderDetails';
 
 const Routes: React.FC = () => (
   <Switch>
@@ -57,7 +62,28 @@ const Routes: React.FC = () => (
     />
 
     <RouteDeliverer path="/availableOrders" exact component={AvailableOrders} />
-    <RouteDeliverer path="/details/:delivery_id" component={OrderDetails} />
+    <RouteDeliverer
+      path="/withdrawnDeliveries"
+      exact
+      component={WithdrawnDeliveries}
+    />
+    <RouteDeliverer
+      path="/completeDeliveries"
+      exact
+      component={CompleteOrders}
+    />
+    <RouteDeliverer
+      path="/details/:delivery_id"
+      component={AvailableOrderDetails}
+    />
+    <RouteDeliverer
+      path="/pending/details/:delivery_id"
+      component={PendingOrderDetails}
+    />
+    <RouteDeliverer
+      path="/complete/details/:delivery_id"
+      component={CompleteOrderDetails}
+    />
     <RouteDeliverer path="/profile" component={DelivererProfile} />
   </Switch>
 );

@@ -24,7 +24,8 @@ const HeaderDeliverer: React.FC = () => {
             </Link>
 
             <NavLink to="/availableOrders">Encomendas pendentes</NavLink>
-            <NavLink to="/others">Entregas finalizadas</NavLink>
+            <NavLink to="/withdrawnDeliveries">Encomendas retiradas</NavLink>
+            <NavLink to="/completeDeliveries">Entregas finalizadas</NavLink>
           </Menu>
 
           <DelivererInfo onClick={toggleBallonModal}>
