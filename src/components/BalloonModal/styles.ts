@@ -21,6 +21,7 @@ export const Container = styled.div<BallonProps>`
   right: 0;
   top: calc(100% + 24px);
   width: 256px;
+  z-index: 3;
 
   box-shadow: rgba(0, 0, 0, 0.44) 0px 5px 20px;
 

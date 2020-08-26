@@ -34,6 +34,9 @@ import AvailableOrderDetails from '../pages/DelivererPages/AvailableOrderDetails
 import CompleteOrderDetails from '../pages/DelivererPages/CompleteOrderDetails';
 import PendingOrderDetails from '../pages/DelivererPages/PendingOrderDetails';
 
+import DeliveryDelivererProblems from '../pages/DelivererPages/DeliveryProblems';
+import DeliveryProblemForm from '../pages/DelivererPages/DeliveryProblems/DeliveryProblemForm';
+
 const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={signIn} />
@@ -83,6 +86,14 @@ const Routes: React.FC = () => (
     <RouteDeliverer
       path="/complete/details/:delivery_id"
       component={CompleteOrderDetails}
+    />
+    <RouteDeliverer
+      path="/delivery/problem/:delivery_id"
+      component={DeliveryDelivererProblems}
+    />
+    <RouteDeliverer
+      path="/delivery/create-problem/:delivery_id"
+      component={DeliveryProblemForm}
     />
     <RouteDeliverer path="/profile" component={DelivererProfile} />
   </Switch>

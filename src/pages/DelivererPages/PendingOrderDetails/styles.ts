@@ -224,6 +224,28 @@ export const ContainerFooter = styled.div`
     }
   }
 
+  > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 45px;
+    width: 100%;
+    background: #0000001a;
+    text-decoration: none;
+    color: #000;
+
+    & + button {
+      margin-left: 50px;
+    }
+
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: ${shade(0.2, '#0000001a')};
+    }
+  }
+
   @media (max-width: 1025px) {
     margin-top: 20px;
     flex-direction: column;

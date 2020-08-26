@@ -49,6 +49,7 @@ export const HeaderContainer = styled.div`
       }
     }
   }
+
   @media (max-width: 1025px) {
     width: 100%;
     display: flex;

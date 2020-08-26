@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useState,
-  useContext,
-  useEffect,
-} from 'react';
+import React, { createContext, useCallback, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../services/api';
 
@@ -13,7 +7,7 @@ interface VerifyToken {
 }
 
 interface AuthenticateDataState {
-  user: object;
+  user: User;
   token: string;
 }
 
@@ -23,10 +17,18 @@ interface SignInCredentials {
   role: 'admin' | 'deliverer';
 }
 
+interface User {
+  id: string;
+  avatar_url: string;
+  email: string;
+  name: string;
+}
+
 interface AuthContextData {
-  user: object;
+  user: User;
   signIn(credentials: SignInCredentials): void;
   signOut(): void;
+  updateUser(user: User): void;
   isAdmin: boolean;
 }
 
@@ -154,12 +156,25 @@ const AuthProvider: React.FC = ({ children }) => {
     [history],
   );
 
+  const updateUser = useCallback(
+    (user: User) => {
+      localStorage.setItem('@Fastfeet:user', JSON.stringify(user));
+
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [setData, data.token],
+  );
+
   return (
     <AuthContext.Provider
       value={{
         user: data.user,
         signIn,
         signOut,
+        updateUser,
         isAdmin: isAdminData,
       }}
     >

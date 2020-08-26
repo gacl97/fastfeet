@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 import logoImg from '../../assets/logo.svg';
 
-import MenuResponsive from './MenuResponsive';
+import HeaderAdminMobile from './HeaderAdminMobile';
 
 import {
   Container,
@@ -21,7 +21,6 @@ const Header: React.FC = () => {
   const { signOut } = useAuth();
 
   const toggleMenu = useCallback(() => {
-    console.log(openMenu);
     setOpenMenu(!openMenu);
   }, [openMenu]);
 
@@ -31,7 +30,8 @@ const Header: React.FC = () => {
         <button className="menu-button" type="button" onClick={toggleMenu}>
           <FiMenu size={22} />
         </button>
-        <MenuResponsive isOpened={openMenu} />
+
+        <HeaderAdminMobile isOpened={openMenu} />
 
         <HeaderContent>
           <LogoImg src={logoImg} alt="FastFeet" />

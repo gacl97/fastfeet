@@ -35,13 +35,13 @@ const DeliverymenForm: React.FC = () => {
   const { deliverer } = useDeliverer();
 
   const handleAvatarChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
+    async (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
         const data = new FormData();
 
         data.append('avatar', e.target.files[0]);
 
-        api.patch(`/deliverers/${id}/avatar`, data).then();
+        await api.patch(`/deliverers/${id}/avatar`, data).then();
         history.push('/deliverymen');
       }
     },

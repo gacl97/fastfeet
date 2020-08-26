@@ -4,6 +4,7 @@ import api from '../../../services/api';
 import formatDate from '../../../utils/formatDate';
 
 import HeaderDeliverer from '../../../components/HeaderDeliverer';
+import HeaderDelivererMobile from '../../../components/HeaderDeliverer/HeaderDelivererMobile';
 import OrdersDeliverersCard from '../../../components/OrdersDeliverersCard';
 
 import { Container, Main, OrderCards } from './styles';
@@ -46,9 +47,11 @@ const WithdrawnDeliveries: React.FC = () => {
   return (
     <>
       <HeaderDeliverer />
+      <HeaderDelivererMobile />
+
       <Container>
         <Main>
-          <OrderCards>
+          <OrderCards isEmpty={deliveries.length === 0 ? 'true' : 'false'}>
             {deliveries.length === 0 ? (
               <span>Você ainda não fez nenhuma retirada</span>
             ) : (

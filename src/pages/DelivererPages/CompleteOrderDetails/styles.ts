@@ -8,7 +8,6 @@ import {
   FiCalendar,
   FiActivity,
   FiChevronLeft,
-  FiXCircle,
   FiInfo,
   FiCheckCircle,
 } from 'react-icons/fi';
@@ -201,7 +200,7 @@ export const ContainerFooter = styled.div`
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
   > button {
     display: flex;
@@ -209,7 +208,7 @@ export const ContainerFooter = styled.div`
     align-items: center;
 
     height: 45px;
-    width: 100%;
+    width: 500px;
     border: 0;
     background: #0000001a;
 
@@ -221,6 +220,10 @@ export const ContainerFooter = styled.div`
 
     &:hover {
       background: ${shade(0.2, '#0000001a')};
+    }
+
+    @media (max-width: 1025px) {
+      width: 100%;
     }
   }
 
@@ -241,10 +244,6 @@ const FooterIconStyle = css`
   margin-right: 5px;
   height: 20px;
   width: 20px;
-`;
-
-export const CircleIcon = styled(FiXCircle)`
-  ${FooterIconStyle}
 `;
 
 export const InfoIcon = styled(FiInfo)`

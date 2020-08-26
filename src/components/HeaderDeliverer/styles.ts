@@ -5,12 +5,15 @@ import { shade } from 'polished';
 export const Container = styled.div`
   height: 84px;
   background: #ffffff;
-
   display: flex;
   align-items: center;
   justify-content: center;
 
   padding: 0 30px;
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
 `;
 
 export const Content = styled.div`
@@ -30,7 +33,6 @@ export const Menu = styled.div`
   img {
     margin-right: 40px;
     height: 30px;
-    /* width: 160px; */
   }
 
   a {
@@ -43,6 +45,7 @@ export const Menu = styled.div`
 
     &.active {
       color: #444444;
+      border-bottom: 2px solid #7d40e7;
     }
 
     &:hover {
@@ -69,5 +72,9 @@ export const DelivererInfo = styled.div`
 
   span {
     color: #7d40e7;
+
+    @media (max-width: 1080px) {
+      display: none;
+    }
   }
 `;

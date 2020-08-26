@@ -7,7 +7,7 @@ interface MenuProps {
   isOpened: boolean;
 }
 
-const MenuResponsive: React.FC<MenuProps> = ({ isOpened }) => {
+const HeaderAdminMobile: React.FC<MenuProps> = ({ isOpened }) => {
   return (
     <>
       <Container isOpen={isOpened ? 'visible' : 'hidden'}>
@@ -20,4 +20,4 @@ const MenuResponsive: React.FC<MenuProps> = ({ isOpened }) => {
   );
 };
 
-export default MenuResponsive;
+export default HeaderAdminMobile;

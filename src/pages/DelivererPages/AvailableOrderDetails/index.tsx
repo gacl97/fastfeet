@@ -6,6 +6,7 @@ import formatDate from '../../../utils/formatDate';
 import formatStatus from '../../../utils/formatStatus';
 
 import HeaderDeliverer from '../../../components/HeaderDeliverer';
+import HeaderDelivererMobile from '../../../components/HeaderDeliverer/HeaderDelivererMobile';
 
 import {
   Container,
@@ -60,6 +61,14 @@ const PendingOrderDetails: React.FC = () => {
     history.goBack();
   }, [history]);
 
+  const handlePushCreateDeliveryProblem = useCallback(() => {
+    history.push(`/delivery/create-problem/${delivery_id}`);
+  }, [history, delivery_id]);
+
+  const handlePushDeliveryProblem = useCallback(() => {
+    history.push(`/delivery/problem/${delivery_id}`);
+  }, [history, delivery_id]);
+
   useEffect(() => {
     async function loadOrder() {
       const response = await api.get<OrderStatus>(
@@ -90,6 +99,7 @@ const PendingOrderDetails: React.FC = () => {
   return (
     <>
       <HeaderDeliverer />
+      <HeaderDelivererMobile />
 
       <Container>
         <Main>
@@ -160,11 +170,11 @@ const PendingOrderDetails: React.FC = () => {
             </Card>
           </MainCards>
           <ContainerFooter>
-            <button type="button">
+            <button type="button" onClick={handlePushCreateDeliveryProblem}>
               <CircleIcon color="#E74040" />
               Informar Problema
             </button>
-            <button type="button">
+            <button type="button" onClick={handlePushDeliveryProblem}>
               <InfoIcon color="#E7BA40" />
               Visualizar Problemas
             </button>

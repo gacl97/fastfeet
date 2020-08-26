@@ -1,4 +1,6 @@
 import styled, { css } from 'styled-components';
+import { shade } from 'polished';
+import { FiChevronLeft } from 'react-icons/fi';
 
 interface EmptyField {
   isEmpty: 'true' | 'false';
@@ -18,6 +20,41 @@ export const Container = styled.div`
   padding: 20px;
 `;
 
+export const ContainerHeader = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 45px;
+    width: 150px;
+    background: #7d40e7;
+    color: #fff;
+    font-weight: 500;
+    border: 0;
+
+    transition: background-color 0.2s;
+    &:hover {
+      background: ${shade(0.2, '#7d40e7')};
+    }
+
+    @media (max-width: 1025px) {
+      width: 100%;
+      height: 35px;
+    }
+  }
+`;
+
+export const BackIcon = styled(FiChevronLeft)`
+  height: 22px;
+  width: 22px;
+  margin-right: 3px;
+  color: #fff;
+`;
+
 export const Main = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,6 +66,8 @@ export const OrderCards = styled.div<EmptyField>`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 16px;
+
+  margin-top: 20px;
 
   > span {
     display: flex;
@@ -42,5 +81,9 @@ export const OrderCards = styled.div<EmptyField>`
 
   @media (min-width: 1281px) {
     grid-template-columns: 1fr 1fr 1fr;
+
+    > span {
+      grid-column: 2;
+    }
   }
 `;
