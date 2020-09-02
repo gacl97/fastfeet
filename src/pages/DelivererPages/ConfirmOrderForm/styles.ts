@@ -1,7 +1,11 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { FiSend, FiChevronLeft } from 'react-icons/fi';
 import { shade } from 'polished';
+
+interface SignatureField {
+  isErrored: boolean;
+}
 
 export const Container = styled.div`
   height: 100%;
@@ -69,9 +73,56 @@ export const ContainerHeader = styled.div`
       background: ${shade(0.2, '#7d40e7')};
     }
 
-    @media (max-width: 1025px) {
+    @media (max-width: 415px) {
       width: 100%;
       height: 35px;
+    }
+  }
+`;
+
+export const ContentMiddle = styled.div<SignatureField>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: 20px;
+
+  label {
+    border: 1px solid #ebe9e9;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+
+    ${props =>
+      props.isErrored &&
+      css`
+        border-color: #c53030;
+      `}
+
+    > img {
+      max-width: 700px;
+      max-height: 400px;
+
+      @media (max-width: 769px) {
+        width: 100%;
+      }
+    }
+
+    > input {
+      display: none;
+    }
+
+    > span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 45px;
+      background: #ebe9e9;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: ${shade(0.2, '#ebe9e9')};
+      }
     }
   }
 `;

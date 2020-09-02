@@ -90,11 +90,9 @@ const PendingOrderDetails: React.FC = () => {
     history.push(`/delivery/problem/${delivery_id}`);
   }, [history, delivery_id]);
 
-  const makeDelivery = useCallback(async () => {
-    await api.put(`deliverers/completeDeliveries/${delivery_id}`);
-
-    history.push('/withdrawnDeliveries');
-  }, [delivery_id, history]);
+  const handlePushConfirmDelivery = useCallback(() => {
+    history.push(`/confirm-order/${delivery_id}`);
+  }, [history, delivery_id]);
 
   return (
     <>
@@ -179,7 +177,7 @@ const PendingOrderDetails: React.FC = () => {
               Visualizar Problemas
             </button>
 
-            <button type="button" onClick={makeDelivery}>
+            <button type="button" onClick={handlePushConfirmDelivery}>
               <CheckCircleIcon color="#55a630" />
               Confirmar Entrega
             </button>

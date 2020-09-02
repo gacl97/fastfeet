@@ -23,6 +23,7 @@ const DelivererProfile: React.FC = () => {
   const [deliverer, setDeliverer] = useState<DelivererProfile>(
     {} as DelivererProfile,
   );
+
   const { user, updateUser } = useAuth();
 
   const handleAvatarChange = useCallback(

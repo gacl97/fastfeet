@@ -40,7 +40,7 @@ export const ContainerHeader = styled.div`
       background: ${shade(0.2, '#7d40e7')};
     }
 
-    @media (max-width: 1025px) {
+    @media (max-width: 415px) {
       width: 100%;
       height: 35px;
     }

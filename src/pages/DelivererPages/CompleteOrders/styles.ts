@@ -42,5 +42,9 @@ export const OrderCards = styled.div<EmptyField>`
 
   @media (min-width: 1281px) {
     grid-template-columns: 1fr 1fr 1fr;
+
+    > span {
+      grid-column: 2;
+    }
   }
 `;

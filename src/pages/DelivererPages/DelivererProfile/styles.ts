@@ -60,6 +60,7 @@ export const AvatarInput = styled.div`
       font-weight: 500;
       color: #dddddd;
     }
+
     &:hover {
       background: ${shade(0.2, '#7d40e7')};
     }
